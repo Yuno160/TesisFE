@@ -1,0 +1,92 @@
+<div class="container" fxLayout="row" fxLayoutAlign="center none">
+  <div fxFlex="95%">
+
+    <mat-card>
+      <mat-card-content>
+        <h2>Patients</h2><!-- 
+        <table class="table">
+          <thead class=" text-primary">
+            <th>
+              Nombre
+            </th>
+            <th>
+              Ci
+            </th>
+            <th>
+              Telefono
+            </th>
+            <th >
+              Direccion
+            </th>
+            <th >
+              Edad
+            </th>
+            <th >
+              CodigoCIF
+            </th>
+          </thead>
+          <tbody>
+            <tr *ngFor=" let patients of listPatients">
+              <td>{{patients.nombre}}</td>
+              <td>{{patients.carnet}}</td>
+              <td>{{patients.telefono}}</td>
+              <td>{{patients.direccion}}</td>
+              <td>{{patients.edad}}</td>
+              <td>{{patients.codCif}}</td>
+              <td>
+                <i (click)="eliminarPaciente(patients._id)" >Delete</i> 
+              </td>
+            </tr>
+
+          </tbody>
+        </table> -->
+
+        <button mat-raised-button (click)="downloadCsv()">Export to CSV</button>
+
+        <table mat-table [dataSource]="listPatients" class="mat-elevation-z8">
+
+          <!--- Note that these columns can be defined in any order.
+                The actual rendered columns are set as a property on the row definition" -->
+        
+          <!-- Position Column -->
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef> Nombre </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+          </ng-container>
+        
+          <!-- Name Column -->
+          <ng-container matColumnDef="carnet">
+            <th mat-header-cell *matHeaderCellDef> Carnet </th>
+            <td mat-cell *matCellDef="let element"> {{element.carnet}} </td>
+          </ng-container>
+        
+          <!-- Weight Column -->
+          <ng-container matColumnDef="telefono">
+            <th mat-header-cell *matHeaderCellDef> Telefono </th>
+            <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
+          </ng-container>
+        
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="direccion">
+            <th mat-header-cell *matHeaderCellDef> Direccion </th>
+            <td mat-cell *matCellDef="let element"> {{element.direccion}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="edad">
+            <th mat-header-cell *matHeaderCellDef> Edad </th>
+            <td mat-cell *matCellDef="let element"> {{element.edad}} </td>
+          </ng-container>
+          <ng-container matColumnDef="cif">
+            <th mat-header-cell *matHeaderCellDef> CodCif </th>
+            <td mat-cell *matCellDef="let element"> {{element.cif}} </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>
