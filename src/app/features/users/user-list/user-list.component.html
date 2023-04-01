@@ -1,21 +1,56 @@
 <div class="container" fxLayout="row" fxLayoutAlign="center none">
-  <div fxFlex="95%">
+  <div >
+    <h2>Calificador</h2>
+    <form [formGroup]="form">
+      <h3>Ingrese datos del Paciente</h3>
+      <mat-form-field appearance="fill">
+        <label>First Name</label>
+        <input matInput formControlName="currentPassword" #name >
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <label>Last Name</label>
+        <input matInput formControlName="currentPassword" #last>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <label>Adress</label>
+        <input matInput  formControlName="currentPassword" #adress>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <label>Ci</label>
+        <input matInput  formControlName="currentPassword" #ci >
+      </mat-form-field>
 
-    <mat-card>
-      <mat-card-content>
-        <h2>Users</h2>
+      
 
 
-        <div class="container" fxLayout="row" fxLayoutAlign="center none">
-          <div fxFlex="50%" class="text-center no-records animate">
-            <mat-icon>people_outline</mat-icon>
-            <p>No users exist.</p>
+    </form>
+<div>
+    <h1 class="title">Elija una rama que desea calificar:</h1>
+          <div class="button-container">
+            <button mat-raised-button color="primary" href="#" class="btn btn-neutral" (click)="funciones()">
+              Funciones Corporales
+            </button>
+            <button mat-raised-button color="primary" href="#" class="btn btn-neutral" id="es">
+              Estructura Corporal
+            </button>
+            <button mat-raised-button color="primary" href="#" class="btn btn-neutral">
+              Actividades
+            </button>
+            <button mat-raised-button color="primary" href="#" class="btn btn-neutral">
+              F. Ambientales
+            </button>
+
           </div>
-          <mat-icon> </mat-icon>
+          <app-corporales [hidden]="isDisplayed" (b)="registrarcal($event)"></app-corporales>
         </div>
 
-      </mat-card-content>
-    </mat-card>
+          <button mat-raised-button color="primary" href="#" class="btn btn-neutral" (click)="registrar(name.value, last.value, adress.value, ci.value)">
+            Registrar
+          </button>
+          <button mat-raised-button color="primary" [hidden]="isShow" href="#" class="btn btn-neutral" (click)="generar()">
+            Generar Carnet
+        </button>
 
   </div>
+
 </div>

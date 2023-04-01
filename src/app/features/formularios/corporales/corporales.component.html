@@ -1,0 +1,40 @@
+<div class="card card-user">
+    <form >
+      <h2 class="title">La discapacidad es a nivel:</h2>
+          <div class="button-container">
+              <button mat-raised-button color="primary" *ngFor="let menuItem of menuItems" href="#" class="btn btn-neutral" (click)="funciones(menuItem.value)">
+                {{menuItem.title}}
+              </button>
+
+          </div>
+    </form>
+
+    <form [hidden]="sensoriales">
+      <h2 class="title">La discapacidad se relaciona con:</h2>
+          <div class="button-container">
+              <button mat-raised-button color="primary" *ngFor="let sen of sens" href="#" class="btn btn-neutral" (click)="vista(sen.value)">
+                {{sen.title}}
+              </button>
+
+          </div>
+    </form>
+    <form [hidden]="vis">
+      <h2 class="title">Que region de la vista?:</h2>
+          <div class="button-container">
+              <button mat-raised-button color="primary" *ngFor="let vista of vistas" href="#" class="btn btn-neutral" (click)="agudeza(vista.value)">
+                {{vista.title}}
+              </button>
+
+          </div>
+    </form>
+
+    <form [hidden]="agu">
+      <h2 class="title">La Agudeza Visual falla a nivel...?:</h2>
+          <div class="button-container">
+              <button mat-raised-button color="primary" *ngFor="let agu of agudezas" href="#" class="btn btn-neutral" (click)="bino(agu.value)">
+                {{agu.title}}
+              </button>
+
+          </div>
+    </form>
+</div>

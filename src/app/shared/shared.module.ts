@@ -12,6 +12,8 @@ import { YesNoPipe } from './pipes/yes-no.pipe';
 import { LayoutComponent } from './layout/layout.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
+import { Patient } from '../core/models/Patient';
+import { PatientService } from '../core/services/patient.service';
 
 @NgModule({
     imports: [
@@ -41,6 +43,9 @@ import {MatButtonModule} from '@angular/material/button';
         ContentPlaceholderAnimationComponent,
         LocalDatePipe,
         YesNoPipe
+    ],
+    providers:[
+        PatientService
     ]
 })
 export class SharedModule { }
