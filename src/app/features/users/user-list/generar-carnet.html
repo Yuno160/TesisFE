@@ -1,0 +1,47 @@
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+  </div>
+  
+  <!-- Contenido a convertir en imagen -->
+  <div mat-dialog-content>
+      <div class="center" id="contenido" style="width: 500px;">
+    
+        <div class="" style="width: 500px;">
+          <div class="" style="width: 500px;">
+            <!-- <img class="image"src="https://1.bp.blogspot.com/-aHmnC6CTiG4/TsAwm88nemI/AAAAAAAAEIo/pMeYwNMfgrE/s1600/Wallpapers%2Bpara%2Btel%25C3%25A9fonos%2BBlackBerry%2B%2B%2528480x640%2529.jpeg">
+     -->
+          </div>
+    
+          <div class=""style="width: 500px;">
+    
+            <div>
+              <h2 class="nombre">{{data.nombre}}</h2>
+              <h2 class="itemm">C.I.: {{data.carnet}}</h2>
+              <h2 class="itemm">Cod. CIF: {{data.cif}}</h2>
+              <h2 class="itemm">Porcentaje: {{data.porcentaje}}</h2>
+              <h2 class="itemm">Fecha: {{data.fecha}}</h2>
+              <h2 class="itemm">Vence: {{data.vence}}</h2>
+            </div>
+    
+          </div>
+        </div>
+    
+      </div>
+    
+    </div>
+  
+  
+    <button type="button" class="btn btn-primary mt-3 mb-5 mx-auto d-block" (click)="crearImagen()">Crear Imagen</button>
+  
+  <!-- Imagen Creada -->
+  <ng-container >
+  
+    <!-- Botón para descargar la imagen creada -->
+     <div class="row">
+       <a type="button" class="btn btn-success mt-3 mx-auto d-block" href="{{imagenCreada}}" download>
+       Descargar
+   </a>
+     </div>
+  </ng-container>
+  

@@ -7,7 +7,8 @@ import { Reserva } from '../models/Reserva';
   providedIn: 'root'
 })
 export class ReservaService {
-  url = 'http://localhost:4000/api/reservas/';
+  url = 'http://localhost:3000/appointments/';
+  UrlR = 'http://localhost:3000/with-patient/';
   constructor(private http: HttpClient) {}
 
   getReserva(): Observable<any>{
@@ -24,5 +25,8 @@ export class ReservaService {
   }
   obtenerReserva(id: string): Observable<any>{
     return this.http.get(this.url + id);
+  }
+  editReserva(id: string,reserva: Reserva):Observable <any>{
+    return this.http.put(this.url+id, reserva);
   }
 }

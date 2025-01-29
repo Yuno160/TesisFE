@@ -19,8 +19,40 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'addpatient',
+    loadChildren: () => import('./features/customers/add-patient/add-patient.module').then(m => m.AddPatientModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'addreserva',
+    loadChildren: () => import('./features/typography/add-reserva/add-reserva.module').then(m => m.AddReservaModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'editpatient/:carnet_identidad',
+    loadChildren: () => import('./features/customers/edit-patient/edit-patient.module').then(m => m.EditPatientModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'editreserva/:id',
+    loadChildren: () => import('./features/typography/add-reserva/add-reserva.module').then(m => m.AddReservaModule),
+    canActivate: [AuthGuard]
+  },
+  
+  {
     path: 'users',
     loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule),
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'calify',
+    loadChildren: () => import('./features/users/user-list/calificar/calificar.module').then(m => m.CalificarModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'generar',
+    loadChildren: () => import('./features/generar-carnet/generar-carnet.module').then(m => m.GenerarCarnetModule),
     canActivate: [AuthGuard]
   },
   {

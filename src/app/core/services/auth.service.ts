@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { delay, map } from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { of, EMPTY } from 'rxjs';
@@ -12,7 +13,7 @@ import { of, EMPTY } from 'rxjs';
 })
 export class AuthenticationService {
 
-    private URL = 'http://localhost:4000/api'
+    private URL = 'http://localhost:3000/api/login'
     constructor(private http: HttpClient,
         @Inject('LOCALSTORAGE') private localStorage: Storage) {
     }
@@ -21,27 +22,9 @@ export class AuthenticationService {
         return this.http.post<any>(this.URL + '/signup', user);
     }
 
-    login(email: string, password: string) {
-        return of(true)
-            .pipe(delay(1000),
-                map((/*response*/) => {
-                    // set token property
-                    // const decodedToken = jwt_decode(response['token']);
-
-                    // store email and jwt token in local storage to keep user logged in between page refreshes
-                    this.localStorage.setItem('currentUser', JSON.stringify({
-                        token: 'aisdnaksjdn,axmnczm',
-                        isAdmin: true,
-                        email: 'john.doe@gmail.com',
-                        id: '12312323232',
-                        alias: 'john.doe@gmail.com'.split('@')[0],
-                        expiration: moment().add(1, 'days').toDate(),
-                        fullName: 'John Doe'
-                    }));
-
-                    return true;
-                }));
-    }
+    login(nombre_usuario: string, contrasena: string): Observable<any> {
+        return this.http.post(this.URL, { nombre_usuario, contrasena });
+      }
 
     logout(): void {
         // clear token remove user from local storage to log user out

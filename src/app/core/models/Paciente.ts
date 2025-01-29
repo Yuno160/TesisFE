@@ -1,8 +1,10 @@
-export class Paciente {
-    $key: string;
-    name: string;
-    ci: number;
-    adress: string;
-    phone: number;
-    code: string;
-}
+export interface Patient {
+    nombre: string;
+    carnet: string;
+    edad: number;
+    telefono?: string;
+    direccion?: string;
+    genero?: 'Masculino' | 'Femenino' | 'Otro';
+    antecedentes_medicos?: string;
+  }
+  

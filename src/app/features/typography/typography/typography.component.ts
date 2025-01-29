@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import html2canvas from "html2canvas";
 import { ReservaService } from '../../../core/services/reserva.service';
 import { Reserva } from '../../../core/models/Reserva';
@@ -7,13 +7,25 @@ import { NGXLogger } from 'ngx-logger';
 import { Title } from '@angular/platform-browser';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { GlobalService } from '../../../core/services/global.service';
-
 @Component({
   selector: 'app-typography',
   templateUrl: './typography.component.html',
   styleUrls: ['./typography.component.css']
 })
 export class TypographyComponent implements OnInit{
+  nombre: string  ;
+  id: string  ;
+  direccion: string  ;
+  
+  porcentaje: string  ;
+  telefono:number;
+  edad:number ;
+  carnet:number;
+  FechaReserva: string;
+  HoraReserva:string;
+  cif:string  ;
+  fecha: string  ;
+  vence: string  ;
   displayedColumns: string[] = ['nombre', 'carnet', 'telefono', 'direccion', 'fecha', 'hora'];
 
   constructor(private _reservaService: ReservaService,
@@ -29,6 +41,7 @@ export class TypographyComponent implements OnInit{
   time = new FormControl();
   imgCreada = false;
   listReserva: Reserva[] = [];
+  
 
   ngOnInit(): void {
     this.titleService.setTitle('angular-material-template - Bookings');
@@ -36,7 +49,6 @@ export class TypographyComponent implements OnInit{
     this.notificationService.openSnackBar('Bookings loaded');
     this.obtenerReserva();
   }
-
 
   obtenerReserva(){
     this._reservaService.getReserva().subscribe(data =>{
@@ -61,5 +73,32 @@ export class TypographyComponent implements OnInit{
     this.csvService.cvsDownload(this.displayedColumns, this.listReserva);
   }
 
+  /* guardarReserva(){
+    console.log(this.nombre)
+    console.log(this.FechaReserva)
+    let reservita= new Reserva();
+    reservita._id = this.id;
+    reservita.nombre = this.nombre;
+    reservita.carnet = this.carnet;
+    reservita.telefono = this.telefono;
+    reservita.direccion = this.direccion;
+    reservita.fechaReserva = this.FechaReserva;
+
+    this._reservaService.guardarReserva(reservita).subscribe(data =>{
+      console.log('La reserva fue registrada correctamente');
+
+    }, error =>{
+      console.log(error);
+    }
+    )
+
+    
+  } */
+
+  addReserva(){
+    console.log("ADD RESERVA")
+  }
+
+  editReserva(id:any){}
 
 }

@@ -1,16 +1,17 @@
-<div class="container" fxLayout="row" fxLayoutAlign="center none">
-    <div fxFlex="95%">
+<div class="charts">
+        <div class="pie"[chart]="pieChart">
 
-        <mat-card>
-            <mat-card-content>
-                <h2>Icons</h2>
+        </div>
 
-                <iframe src="https://design.google.com/icons/">
-                    <p>Your browser does not support iframes.</p>
-                </iframe>
+        <div class="line"[chart]="lineChart">
 
-            </mat-card-content>
-        </mat-card>
+        </div>
 
-    </div>
-</div>
+</div> 
+
+
+<!-- <highcharts-chart
+  [Highcharts]="Highcharts"
+  [options]="chartOptions"
+></highcharts-chart>
+ -->

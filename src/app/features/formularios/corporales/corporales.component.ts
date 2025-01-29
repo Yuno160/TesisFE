@@ -31,6 +31,12 @@ export const SEN:RouteInfo[] = [
 
 
 ];
+export const MEN:RouteInfo[] = [
+
+  {  title: 'Mentales Globales', value:'b114'},
+  { title: 'Mentales Especificas', value:'b140 '}
+
+];
 export const ROUTES: RouteInfo[] = [
 
   {  title: 'Funciones Mentales', value:'b110'},
@@ -51,9 +57,11 @@ export const ROUTES: RouteInfo[] = [
 export class CorporalesComponent implements OnInit {
   menuItems: any=[];
   sens: any=[];
+  ment: any=[];
   vistas: any=[];
   agudezas: any=[];
   sensoriales = true;
+  mentales = true;
   vis = true;
   agu = true;
 
@@ -63,6 +71,7 @@ export class CorporalesComponent implements OnInit {
   ngOnInit(){
     this.menuItems = ROUTES.filter(menuItem => menuItem);
     this.sens = SEN.filter(sen => sen);
+    this.ment = MEN.filter(m => m);
     this.vistas = VIS.filter(vis => vis);
     this.agudezas = AGU.filter(agu => agu);
   }
@@ -77,6 +86,18 @@ export class CorporalesComponent implements OnInit {
             this.sensoriales = true;
         }
     }
+    if(value == "b110"){
+      if(this.mentales)
+        {
+            this.mentales = false;
+            this.sensoriales = true;
+        }else{
+            this.mentales = true;
+            
+            this.sensoriales = true;
+        }
+    }
+
   }
 
   vista(value:string){

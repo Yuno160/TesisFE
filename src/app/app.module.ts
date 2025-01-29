@@ -9,7 +9,8 @@ import { CustomMaterialModule } from './custom-material/custom-material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { LoggerModule } from 'ngx-logger';
 import { environment } from '../environments/environment';
-
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { ChartModule } from 'angular-highcharts';
 @NgModule({
   declarations: [
     AppComponent
@@ -19,13 +20,15 @@ import { environment } from '../environments/environment';
     BrowserAnimationsModule,
     CoreModule,
     SharedModule,
+    ChartModule,
+    FullCalendarModule,
     CustomMaterialModule.forRoot(),
     AppRoutingModule,
     LoggerModule.forRoot({
       serverLoggingUrl: `http://my-api/logs`,
       level: environment.logLevel,
       serverLogLevel: environment.serverLogLevel
-    })
+    }),
   ],
   bootstrap: [AppComponent]
   

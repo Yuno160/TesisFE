@@ -2,3 +2,12 @@ iframe {
     width: 100%;
     height: 650px;
 }
+.charts{
+    display: flex;
+}
+.pie{
+    flex: 1;
+}
+.line{
+    flex: 1;
+}

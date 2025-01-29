@@ -1,47 +1,29 @@
-<!-- Contenido a convertir en imagen -->
-<div id="contenido" >
-  <div class="center">
+<div class="row text-center mt-3">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title" Carnet></div>
+        <div class="contenedor">
+          <img #img src="../../../assets/images/images/plantillacarnet3.png" crossorigin="Anonymous">
+        </div>
+        <div class="centrado">
 
-    <div class="float-container">
-      <div class="float-child">
-        <img class="image"src="https://1.bp.blogspot.com/-aHmnC6CTiG4/TsAwm88nemI/AAAAAAAAEIo/pMeYwNMfgrE/s1600/Wallpapers%2Bpara%2Btel%25C3%25A9fonos%2BBlackBerry%2B%2B%2528480x640%2529.jpeg">
+          <h1>{{nombre}}</h1>
 
+        </div>
+
+      <!-- -  <qrcode  #parent [qrdata]="qrdata" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+         -->
+        <canvas id="canvas" #micanvas width="950" height="994"  class="img-thumbnail"></canvas>
+        
       </div>
 
-      <div class="float-child">
-
-        <mat-list>
-          <mat-list-item class="nombre">{{name}}</mat-list-item>
-          <mat-list-item class="itemm">C.I.: {{ci}}</mat-list-item>
-          <mat-list-item class="itemm">Cod. CIF: {{cif}}</mat-list-item>
-          <mat-list-item class="itemm">Porcentaje: {{porcentaje}}</mat-list-item>
-          <mat-list-item class="itemm">Fecha: {{fecha}}</mat-list-item>
-          <mat-list-item class="itemm">Vence: {{vence}}</mat-list-item>
-        </mat-list>
-
-      </div>
     </div>
 
+    <div class="text-center mt-2">
+      <a id="download" class="btn btn-outline-danger" (click)="guardar_canvas_local()"> Download </a>
+
+    </div>
   </div>
 
 </div>
-
-<button type="button" class="btn btn-primary mt-3 mb-5 mx-auto d-block" (click)="crearImagen()">Crear Imagen</button>
-
-<!-- Imagen Creada -->
-<ng-container *ngIf="imgCreada === true;">
-  <div align="center">
-
-     <!-- Imagen Creada -->
-     <h4>Imagen Creada:</h4>
-     <img src={{imagenCreada}}>
-
-  </div>
-
-  <!-- Botón para descargar la imagen creada -->
-   <div class="row">
-     <a type="button" class="btn btn-success mt-3 mx-auto d-block" href="{{imagenCreada}}" download>
-     Descargar
- </a>
-   </div>
-</ng-container>

@@ -1,56 +1,27 @@
-<div class="container" fxLayout="row" fxLayoutAlign="center none">
+<div class="titulo"  >
   <div >
-    <h2>Calificador</h2>
-    <form [formGroup]="form">
-      <h3>Ingrese datos del Paciente</h3>
-      <mat-form-field appearance="fill">
-        <label>First Name</label>
-        <input matInput formControlName="currentPassword" #name >
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <label>Last Name</label>
-        <input matInput formControlName="currentPassword" #last>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <label>Adress</label>
-        <input matInput  formControlName="currentPassword" #adress>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <label>Ci</label>
-        <input matInput  formControlName="currentPassword" #ci >
-      </mat-form-field>
+    <h2>Diagnose</h2>
+  <div>
+    <h1 >Patient- {{showName}} {{showCarnet}}</h1>
+</div>
 
-      
-
-
-    </form>
-<div>
-    <h1 class="title">Elija una rama que desea calificar:</h1>
-          <div class="button-container">
-            <button mat-raised-button color="primary" href="#" class="btn btn-neutral" (click)="funciones()">
-              Funciones Corporales
-            </button>
-            <button mat-raised-button color="primary" href="#" class="btn btn-neutral" id="es">
-              Estructura Corporal
-            </button>
-            <button mat-raised-button color="primary" href="#" class="btn btn-neutral">
-              Actividades
-            </button>
-            <button mat-raised-button color="primary" href="#" class="btn btn-neutral">
-              F. Ambientales
-            </button>
+<div class="container">
+  
+    <h1 class="title">Step 1.- The System is really complex. To begin with it please choose and specific area you want to Diagnose:</h1>
+          <div >
+            <img id="imagenes" src="../../../../assets/images/images/function2.png" (click)="funciones()" routerLink="/calify">
+            <img id="imagenes" src="../../../../assets/images/images/estructura.jpeg"(click)="estructura()" routerLink="/calify">
+            <img id="imagenes" src="../../../../assets/images/images/actividaes.jpeg">
 
           </div>
           <app-corporales [hidden]="isDisplayed" (b)="registrarcal($event)"></app-corporales>
         </div>
 
-          <button mat-raised-button color="primary" href="#" class="btn btn-neutral" (click)="registrar(name.value, last.value, adress.value, ci.value)">
-            Registrar
-          </button>
-          <button mat-raised-button color="primary" [hidden]="isShow" href="#" class="btn btn-neutral" (click)="generar()">
+          
+          <button mat-raised-button color="primary" href="#" class="btn btn-neutral" (click)="openDialog()">
             Generar Carnet
         </button>
 
-  </div>
+   </div>
 
 </div>

@@ -1,9 +1,19 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@use "@material/icon-button";
 
+@include icon-button.core-styles;
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 14px;
+}
+
+.my-class .mat-dialog-container{
+  height: 400px;
+  width: 600px;
+  border-radius: 10px;
+  background: lightcyan;
+  color: #039be5;
 }
 
 .full-width {

@@ -1,0 +1,15 @@
+.login-container{
+    background: url("../../../../assets/images/images/doc.jpg");
+    height: 100%;
+}
+#login{
+    background-color: #41dedd;
+    color: #121d26;
+}
+.laliform{
+    background-color: #fffbe1;
+}
+input{
+    background-color: #fffbe1;
+
+}

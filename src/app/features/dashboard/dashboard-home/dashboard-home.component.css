@@ -782,7 +782,7 @@ button{
 }
 
 #intro{
-        background:url("../../../../assets/images/images/home.jpg") 50% 0 no-repeat fixed;
+        background:url("../../../../assets/images/images/abstract.jpg") 50% 0 no-repeat fixed;
 		background-size: cover;
         color: white;
         height: 900px;
@@ -790,6 +790,8 @@ button{
         padding: 0;
         width: 100%;
 }
+
+
 #login
 {
         margin-left: 95px;
@@ -895,6 +897,113 @@ padding: 0;
         margin-top: 2%;
 }
 
+/* 
+** Hero banner image template
+* Available for download on GitHub
+* Avaiable fonts:
+* font-family: 'Aclonica', sans-serif;
+* font-family: 'Roboto', sans-serif;
+* */
 
+/* basic CSS reset */
+* {
+        box-sizing: border-box;
+      }
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      img {
+        max-width: 100%;
+      }
+      /* Banner */
+      body {
+        font-family: 'Roboto', sans-serif;
+      }
+      .hero {
+        background:linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url("../../../../assets/images/images/ai.png");
+        background-size:cover;
+        background-position: center;
+        padding: 500px 15px;
+      }
+      .heroo {
+        background:linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url("../../../../assets/images/images/mirar.jpg");
+        background-size:cover;
+        background-position: center;
+        padding: 500px 15px;
+      }
+      .hero .hero-container {
+        text-align: center;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .heroo .hero-container {
+        text-align: center;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .hero .hero-container h1{
+        color: rgba(255, 255, 255, 0.55);
+        font-family: 'Aclonica', sans-serif;
+        font-size: 10px;
+        margin: 30;
+      }
+      .heroo .hero-container h1{
+        color: rgba(255, 255, 255, 0.55);
+        font-family: 'Aclonica', sans-serif;
+        font-size: 10px;
+        margin: 30;
+      }
+      .hero .hero-container p {
+        color: #FFFFFF;
+        font-size: 22px;
+      }
+      .heroo .hero-container p {
+        color: #FFFFFF;
+        font-size: 22px;
+      }
+      .hero .hero-container a {
+        text-decoration: none;
+        background-color: #7f53ac;
+        background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);
+        color: #FFFFFF;
+        padding: 20px 60px;
+        display: inline-block;
+        text-transform: uppercase;
+        border-radius: 30px;
+        transition: all 0.9s ease;
+      }
+      .heroo .hero-container a {
+        text-decoration: none;
+        background-color: #7f53ac;
+        background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);
+        color: #FFFFFF;
+        padding: 20px 60px;
+        display: inline-block;
+        text-transform: uppercase;
+        border-radius: 30px;
+        transition: all 0.9s ease;
+      }
+      .hero .hero-container a:hover {
+        background-color: #42378f;
+        background-image: linear-gradient(315deg, #42378f 0%, #f53844 74%);
+        color: #000000;
+        box-shadow: 0 20px 8px 0 rgba(0, 0, 0, 0.9), 0 6px 30px 0 rgba(0, 0, 0, 0.9);
+      }
+      .heroo .hero-container a:hover {
+        background-color: #42378f;
+        background-image: linear-gradient(315deg, #42378f 0%, #f53844 74%);
+        color: #000000;
+        box-shadow: 0 20px 8px 0 rgba(0, 0, 0, 0.9), 0 6px 30px 0 rgba(0, 0, 0, 0.9);
+      }
+      @media (min-width: 768px) {
+        .hero .hero-container h1{
+          font-size: 70px;
+        }
+      }
 
-
+      @media (min-width: 768px) {
+        .heroo .hero-container h1{
+          font-size: 70px;
+        }
+      }

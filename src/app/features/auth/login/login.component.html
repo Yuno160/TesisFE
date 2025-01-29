@@ -1,47 +1,64 @@
 <div class="container login-container" fxLayout="row" fxLayoutAlign="center center">
-    <form [formGroup]="loginForm" fxFlex="30%" fxFlex.sm="50%" fxFlex.xs="90%">
-        <mat-card>
-            <mat-card-title>LALI</mat-card-title>
+    <form (ngSubmit)="onSubmit()" fxFlex="30%" fxFlex.sm="50%" fxFlex.xs="90%">
+        <mat-card class="laliform">
+            <mat-card-title>SHOG.AI</mat-card-title>
             <mat-card-subtitle>Log in to your account</mat-card-subtitle>
             <mat-card-content>
 
                 <mat-form-field class="full-width">
-                    <input id="emailInput" matInput placeholder="Email" formControlName="email" autocomplete="email"
-                        type="email">
-
-                    <mat-error id="invalidEmailError" *ngIf="loginForm.controls['email'].hasError('email')">
-                        Please enter a valid email address
+                    <input
+                        id="nombreUsuarioInput"
+                        matInput
+                        placeholder="Usuario"
+                        [(ngModel)]="nombre_usuario"
+                        name="nombre_usuario"
+                        autocomplete="username"
+                        type="text"
+                        required
+                    />
+                    <mat-error *ngIf="!nombre_usuario">
+                        Usuario es <strong>requerido</strong>
                     </mat-error>
-                    <mat-error id="requiredEmailError" *ngIf="loginForm.controls['email'].hasError('required')">
-                        Email is
-                        <strong>required</strong>
-                    </mat-error>
-
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input id="passwordInput" matInput placeholder="Password" formControlName="password" type="password"
-                        autocomplete="current-password">
-                    <mat-error id="requiredPasswordError" *ngIf="loginForm.controls['email'].hasError('required')">
-                        Password is
-                        <strong>required</strong>
+                    <input
+                        id="passwordInput"
+                        matInput
+                        placeholder="Contraseña"
+                        [(ngModel)]="contrasena"
+                        name="contrasena"
+                        type="password"
+                        autocomplete="current-password"
+                        required
+                    />
+                    <mat-error *ngIf="!contrasena">
+                        Contraseña es <strong>requerida</strong>
                     </mat-error>
                 </mat-form-field>
 
                 <div class="full-width">
-                    <mat-slide-toggle formControlName="rememberMe">Remember my email address</mat-slide-toggle>
+                    <!-- <mat-slide-toggle [(ngModel)]="rememberMe" name="rememberMe">Recordar usuario</mat-slide-toggle> -->
                 </div>
 
             </mat-card-content>
 
             <mat-card-actions class="login-actions">
-                <button mat-raised-button id="login" color="primary" [disabled]="loginForm.invalid || loading"
-                    (click)="login()">Login</button>
-                <button mat-button id="resetPassword" (click)="resetPassword()" type="button">Reset Password</button>
+                <button
+                    mat-raised-button
+                    id="login"
+                    color="primary"
+                    [disabled]="!nombre_usuario || !contrasena"
+                    type="submit"
+                >
+                    LogIn
+                </button>
+                <!-- <button mat-button id="resetPassword" (click)="resetPassword()" type="button">  Reset Password</button> -->
             </mat-card-actions>
 
         </mat-card>
 
         <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+        <p *ngIf="error" class="error">{{ error }}</p>
     </form>
 </div>

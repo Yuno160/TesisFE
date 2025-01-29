@@ -30,7 +30,7 @@ export class CustomerListComponent implements OnInit {
     private csvService : GlobalService
   ) { }
 
-  listPatients : Patient[] = [];
+  listPatients : Patient[]=[];
 
   ngOnInit() {
     this.titleService.setTitle('angular-material-template - Patients');
@@ -61,20 +61,35 @@ export class CustomerListComponent implements OnInit {
     })
   }
 
-  eliminarPaciente(id:any){
-    this._PatientService.deletePatient(id).subscribe(data =>{
-      this.obtenerPacientes();
-
-    }, error => {
-      console.log(error)
+  eliminarPaciente(carnet_identidad: string): void {
+    if (confirm('¿Estás seguro de que deseas eliminar este paciente?')) {
+        this._PatientService.deletePatient(carnet_identidad).subscribe(
+            (response) => {
+                console.log('Paciente eliminado:', response);
+                alert('Paciente eliminado correctamente.');
+                this.obtenerPacientes(); // Actualizar la lista de pacientes
+            },
+            (error) => {
+                console.error('Error al eliminar el paciente:', error);
+                alert('Hubo un error al eliminar el paciente.');
+            }
+        );
     }
-    
-    )
-  }
+}
+
 
   downloadCsv(){
     console.log("lista pacientes" )
     console.log(this.listPatients)
     this.csvService.cvsDownload(this.displayedColumns, this.listPatients);
+  }
+
+  guardarCarnet(carnet:string, nombre:string){
+
+    console.log("carnet:"+carnet);
+    localStorage.setItem('carnet', carnet);  
+    console.log("nombre:"+nombre);
+    localStorage.setItem('nombre', nombre); 
+
   }
 }
