@@ -1,0 +1,65 @@
+/* Estilo general para los mat-form-field */
+mat-form-field {
+    width: 100%;
+    margin-bottom: 16px; /* Espaciado entre los campos */
+  }
+  
+  /* Estilo específico para el mat-select (hora) */
+  mat-select {
+    border-radius: 4px; /* Borde redondeado */
+    border: 1px solid rgba(0, 0, 0, 0.12); /* Borde similar al mat-datepicker */
+  }
+  
+  /* Aseguramos que haya un buen espaciado entre los campos de fecha y hora */
+  mat-form-field + mat-form-field {
+    margin-left: 16px; /* Espacio entre el Datepicker y el Select */
+  }
+  
+  /* Estilo para cuando los campos están enfocados */
+  mat-form-field.mat-focused mat-label {
+    color: #3f51b5; /* Color de la etiqueta al estar enfocada */
+  }
+  
+  mat-select.mat-focused {
+    border-color: #3f51b5; /* Color del borde al estar enfocado */
+  }
+  
+  /* Estilo del botón de "Reservar" */
+  button {
+    margin-top: 20px; /* Espaciado adicional para separar el botón de los campos */
+  }
+  
+  /* Estilo para el error (si lo hay) */
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  /* Estilo del contenedor principal */
+  .container {
+    padding: 20px;
+  }
+  
+  /* Estilo para la card, para que no se quede pegada al borde */
+  .card {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Título */
+  h2 {
+    margin-bottom: 20px;
+    color: #3f51b5;
+  }
+  
+  /* Asegurar que el input de búsqueda y sus elementos de sufijo estén bien alineados */
+  mat-form-field input {
+    width: calc(100% - 40px); /* Hacemos que el input de búsqueda ocupe el espacio disponible sin que el botón interfiera */
+  }
+  
+  button[mat-icon-button] {
+    margin-left: 8px; /* Espaciado entre el input y el botón de búsqueda */
+  }
+  

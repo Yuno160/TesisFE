@@ -15,6 +15,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Patient } from '../core/models/Patient';
@@ -74,7 +75,8 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
         ConfirmDialogComponent,
         ContentPlaceholderAnimationComponent,
         LocalDatePipe,
-        YesNoPipe
+        YesNoPipe,
+        MatRadioModule
     ],
     providers:[
         PatientService,

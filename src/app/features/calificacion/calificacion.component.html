@@ -1,0 +1,82 @@
+<div class="calificacion-container">
+
+  <ng-container *ngIf="paciente; else patientLoading">
+    <div class="patient-header">
+      <div class="patient-details">
+        <h1 class="patient-name">{{ paciente.nombre }}</h1>
+        <h3 class="patient-name">{{ paciente.edad }} años</h3>
+        <h3 class="patient-name">{{ paciente.carnet_identidad }}</h3>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #patientLoading>
+    <div class="patient-header">
+      <p>Cargando datos del paciente...</p>
+    </div>
+  </ng-template>
+  <form [formGroup]="calificacionForm" (ngSubmit)="guardarCalificacion()">
+
+    <label for="observaciones">Observaciones Generales:</label>
+    <textarea id="observaciones" formControlName="observaciones"></textarea>
+
+    <hr>
+
+    <h3>Seleccione los Códigos CIF correspondientes:</h3>
+    
+    <div class="cif-selection-layout">
+      
+      <div class="cif-tree-panel">
+        <div class="search-box">
+          <input 
+            type="text" 
+            placeholder="Buscar código o descripción..." 
+            [(ngModel)]="searchTerm" 
+            (ngModelChange)="onSearchTermChange()"
+            [ngModelOptions]="{standalone: true}"
+          />
+          <i class="fas fa-search"></i> 
+        </div>
+
+        <div class="tree-wrapper">
+          <app-cif-tree 
+            [searchTerm]="searchTerm" 
+            (selectionUpdate)="onTreeSelectionChange($event)"
+          >
+          </app-cif-tree>
+        </div>
+      </div>
+
+      <div class="cif-selected-panel">
+        <h4>Tu Selección:</h4>
+        <div class="selected-codes-list">
+          
+          <ng-container *ngIf="calificacionForm.get('cifCodes')?.value.length > 0; else noSelection">
+            <div *ngFor="let selectedCode of calificacionForm.get('cifCodes')?.value" class="selected-tag">
+              <i class="fas fa-check-circle"></i> 
+              <span>
+                <strong>{{ selectedCode.codigo }}</strong> {{ selectedCode.descripcion }}
+              </span>
+              <button type="button" class="remove-tag-btn" (click)="removeSelectedCode(selectedCode.codigo)">
+                <i class="fas fa-times"></i> 
+              </button>
+            </div>
+          </ng-container>
+          
+          <ng-template #noSelection>
+            <p class="text-muted">No has seleccionado ningún código.</p>
+          </ng-template>
+        </div>
+      </div>
+
+    </div>
+
+    <hr>
+    
+    <button type="submit" class="btn-guardar" [disabled]="calificacionForm.invalid">
+      Guardar Calificación
+    </button>
+
+  </form>
+
+</div>

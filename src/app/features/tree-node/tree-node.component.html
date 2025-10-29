@@ -1,0 +1,32 @@
+<div class="node-row">
+  
+  <span (click)="toggleExpand()" class="toggle-indicator">
+    <ng-container *ngIf="hasChildren">
+      {{ isExpanded ? '▼' : '▶' }}
+    </ng-container>
+    <ng-container *ngIf="!hasChildren">&nbsp;</ng-container> 
+  </span>
+
+  <input 
+    type="checkbox" 
+    (change)="onToggle($event)"
+    class="node-checkbox"
+    (click)="$event.stopPropagation()" 
+    />
+
+  <span (click)="toggleExpand()" class="node-label">
+    <strong>{{ node.codigo }}</strong>: {{ node.descripcion }}
+  </span>
+
+</div>
+
+<ul *ngIf="hasChildren && isExpanded" class="children-list">
+  <li *ngFor="let childNode of node.children">
+    <app-tree-node 
+      [node]="childNode" 
+      (nodeToggled)="onChildToggle($event)"
+      [searchTerm]="searchTerm"
+      >
+    </app-tree-node>
+  </li>
+</ul>

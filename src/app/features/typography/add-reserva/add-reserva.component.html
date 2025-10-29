@@ -24,7 +24,6 @@
                             <p>Edad: {{ patient.edad }}</p>
                             <p>Teléfono: {{ patient.telefono }}</p>
                             <p>Dirección: {{ patient.direccion }}</p>
-                            <button (click)="createReservation()">Crear Reserva</button>
                           </div>
                           <div>
                             <mat-form-field appearance="outline">
@@ -34,10 +33,18 @@
                                 <mat-datepicker #picker></mat-datepicker>
                               </mat-form-field>
                               
-                              <mat-form-field appearance="outline">
-                                <mat-label>Seleccionar hora</mat-label>
-                                <input matInput [(ngModel)]="selectedTime" [ngxTimepicker]="timepicker" readonly />
-                                <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+                              <mat-form-field>
+                                <mat-label>Hora</mat-label>
+                                <mat-select [(ngModel)]="horaSeleccionada" placeholder="Selecciona una hora">
+                                  <mat-option *ngFor="let hora of horasDisponibles" [value]="hora">{{ hora }}</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+
+                              <mat-form-field>
+                                <mat-label>Seleccionar Crew</mat-label>
+                                <mat-select [(ngModel)]="selectedCrew"  (selectionChange)="onCrewChange($event)" placeholder="Selecciona un crew">
+                                  <mat-option *ngFor="let crew of crews" [value]="crew.crew_id">{{ crew.crew_code }}</mat-option>
+                                </mat-select>
                               </mat-form-field>
                               
                               <button mat-raised-button color="primary" (click)="createReservation()">Reservar</button>

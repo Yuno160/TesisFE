@@ -42,7 +42,6 @@ export class AddPatientComponent implements OnInit {
       direccion: this.productoForm.get('direccion')?.value || null,
       genero: this.productoForm.get('genero')?.value || null,
       antecedentes_medicos: this.productoForm.get('antecedentes_medicos')?.value || null,};
-
     console.log(PATIENT);
 
    
@@ -63,7 +62,7 @@ export class AddPatientComponent implements OnInit {
 
     if(this.id !== null) {
       this.titulo = 'EDITAR PACIENTE';
-      this._patientService.getPatient(this.id).subscribe(data => {
+      this._patientService.getPacienteByCarnet(this.id).subscribe(data => {
         this.productoForm.setValue({
           nombre: data.nombre,
           carnet_identidad: data.carnet_identidad,

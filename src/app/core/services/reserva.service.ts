@@ -29,4 +29,9 @@ export class ReservaService {
   editReserva(id: string,reserva: Reserva):Observable <any>{
     return this.http.put(this.url+id, reserva);
   }
+  createReservation(reservationData: any): Observable<any> {
+    return this.http.post('http://localhost:3000/appointments/reservations/', reservationData);
+  }
+  
+  
 }

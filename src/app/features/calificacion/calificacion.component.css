@@ -1,0 +1,163 @@
+/* src/app/calificacion/calificacion.component.css */
+
+.calificacion-container {
+  padding: 20px;
+  max-width: 1200px; /* Ancho máximo para el contenedor */
+  margin: 20px auto; /* Centrar en la página */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  color: #333;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-family: sans-serif;
+  box-sizing: border-box; /* Incluye padding en el ancho */
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 30px 0;
+}
+
+h3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* --- DISEÑO DE DOS COLUMNAS --- */
+.cif-selection-layout {
+  display: flex; /* Activa Flexbox para las columnas */
+  gap: 25px;     /* Espacio entre las columnas */
+}
+
+.cif-tree-panel {
+  flex: 2; /* Columna izquierda ocupa 2/3 del espacio */
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 15px;
+  min-height: 400px; /* Para que no se vea "chico" si el árbol es pequeño */
+  display: flex;
+  flex-direction: column; /* Para que buscador y árbol se apilen */
+}
+
+.cif-selected-panel {
+  flex: 1; /* Columna derecha ocupa 1/3 del espacio */
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 15px;
+}
+
+/* Estilos del buscador */
+.search-box {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 8px 10px 8px 35px; /* Padding a la izquierda para el ícono */
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 0.95em;
+  box-sizing: border-box;
+}
+
+.search-box i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.tree-wrapper {
+  flex-grow: 1; /* Para que el árbol ocupe el espacio restante */
+  overflow-y: auto; /* Scroll si el árbol es muy largo */
+}
+
+
+/* Estilos de las píldoras de selección */
+.selected-codes-list {
+  margin-top: 10px;
+}
+
+.selected-tag {
+  display: flex;
+  align-items: center;
+  background-color: #e6f7ff; /* Azul claro */
+  border: 1px solid #91d5ff; /* Borde azul */
+  border-radius: 20px;
+  padding: 5px 10px;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  color: #262626;
+  gap: 8px;
+}
+
+.selected-tag i.fa-check-circle {
+  color: #52c41a; /* Verde para el check */
+}
+
+.selected-tag strong {
+  color: #1890ff; /* Azul para el código */
+}
+
+.remove-tag-btn {
+  background: none;
+  border: none;
+  color: #8c8c8c;
+  cursor: pointer;
+  font-size: 0.9em;
+  margin-left: auto; /* Empuja la X a la derecha */
+  padding: 0 5px;
+}
+
+.remove-tag-btn:hover {
+  color: #333;
+}
+
+.text-muted {
+    color: #888;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+/* Estilo del botón de guardar */
+.btn-guardar {
+  display: block;
+  width: 200px;
+  padding: 12px 20px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1em;
+  cursor: pointer;
+  margin: 30px auto 0 auto; /* Centrar el botón */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-guardar:hover {
+  background-color: #40a9ff;
+}

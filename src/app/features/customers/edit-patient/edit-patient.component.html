@@ -3,62 +3,102 @@
         <div class="col-lg-6 offset-lg-3">
             <div class="card">
                 <div class="card-body text-center">
-                    <h2> {{ titulo | uppercase }}</h2>
+                    <h2>{{ titulo | uppercase }}</h2>
+                    
+                    <!-- Mensajes de error -->
+                    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+                        {{ errorMessage }}
+                        <button type="button" class="btn-close float-end" (click)="clearMessages()"></button>
+                    </div>
+                    
+                    <!-- Mensajes de éxito -->
+                    <div *ngIf="successMessage" class="alert alert-success mt-3">
+                        {{ successMessage }}
+                        <button type="button" class="btn-close float-end" (click)="clearMessages()"></button>
+                    </div>
+
                     <form class="mt-3" [formGroup]="editForm" (ngSubmit)="editarPaciente()">
                         <div class="mb-3">
                             <input type="text" formControlName="nombre" class="form-control form-control-lg"
-                                placeholder="Patient Name">
+                                placeholder="Nombre del Paciente">
                             <div class="text-danger"
                                 *ngIf="editForm.get('nombre')?.hasError('required') && editForm.get('nombre')?.touched">
-                                <span>Patient name <strong>is mandatory</strong></span>
+                                <span>El nombre <strong>es obligatorio</strong></span>
+                            </div>
+                            <div class="text-danger" *ngIf="editForm.get('nombre')?.hasError('maxlength')">
+                                <span>El nombre no puede exceder los 100 caracteres</span>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <input type="text" formControlName="carnet_identidad" class="form-control form-control-lg"
-                                placeholder="DNI">
-                            <div class="text-danger"
-                                *ngIf="editForm.get('carnet')?.hasError('required') && editForm.get('carnet')?.touched">
-                                <span>DNI <strong>is mandatory</strong></span>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" formControlName="edad" class="form-control form-control-lg"
-                                placeholder="Age">
-                            <div class="text-danger"
-                                *ngIf="editForm.get('edad')?.hasError('required') && editForm.get('edad')?.touched">
-                                <span>Age <strong>is mandatory</strong></span>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" formControlName="telefono" class="form-control form-control-lg"
-                                placeholder="Phone Number">
-                            <div class="text-danger"
-                                *ngIf="editForm.get('telefono')?.hasError('required') && editForm.get('telefono')?.touched">
-                                <span>Phone Number <strong>is mandatory</strong></span>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" formControlName="direccion" class="form-control form-control-lg"
-                                placeholder="Address">
-                            <div class="text-danger"
-                                *ngIf="editForm.get('direccion')?.hasError('required') && editForm.get('direccion')?.touched">
-                                <span>Address <strong>is Mandatory</strong></span>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <input type="text" formControlName="genero" class="form-control form-control-lg"
-                                placeholder="Genero">
-                            <div class="text-danger"
-                                *ngIf="editForm.get('direccion')?.hasError('required') && editForm.get('direccion')?.touched">
-                                <span>Genero <strong>is Mandatory</strong></span>
-                            </div>
-                        </div>
-
                         
                         <div class="mb-3">
-                            <button routerLink="/customers" class="btn btn-outline-secondary btn-lg float-start">VOLVER</button>
-                            <button type="submit" [disabled]="editForm.invalid" class="btn btn-info btn-lg float-end">ACEPTAR</button>
+                            <input type="text" formControlName="carnet_identidad" class="form-control form-control-lg"
+                                placeholder="Carnet de Identidad">
+                            <div class="text-danger"
+                                *ngIf="editForm.get('carnet_identidad')?.hasError('required') && editForm.get('carnet_identidad')?.touched">
+                                <span>El carnet <strong>es obligatorio</strong></span>
+                            </div>
+                            <div class="text-danger" *ngIf="editForm.get('carnet_identidad')?.hasError('pattern')">
+                                <span>Solo se permiten números</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <input type="number" formControlName="edad" class="form-control form-control-lg"
+                                placeholder="Edad">
+                            <div class="text-danger"
+                                *ngIf="editForm.get('edad')?.hasError('required') && editForm.get('edad')?.touched">
+                                <span>La edad <strong>es obligatoria</strong></span>
+                            </div>
+                            <div class="text-danger" *ngIf="editForm.get('edad')?.hasError('min') || editForm.get('edad')?.hasError('max')">
+                                <span>La edad debe estar entre 1 y 120 años</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <input type="text" formControlName="telefono" class="form-control form-control-lg"
+                                placeholder="Teléfono">
+                            <div class="text-danger"
+                                *ngIf="editForm.get('telefono')?.hasError('required') && editForm.get('telefono')?.touched">
+                                <span>El teléfono <strong>es obligatorio</strong></span>
+                            </div>
+                            <div class="text-danger" *ngIf="editForm.get('telefono')?.hasError('pattern')">
+                                <span>Solo se permiten números</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <input type="text" formControlName="direccion" class="form-control form-control-lg"
+                                placeholder="Dirección">
+                            <div class="text-danger"
+                                *ngIf="editForm.get('direccion')?.hasError('required') && editForm.get('direccion')?.touched">
+                                <span>La dirección <strong>es obligatoria</strong></span>
+                            </div>
+                            <div class="text-danger" *ngIf="editForm.get('direccion')?.hasError('maxlength')">
+                                <span>La dirección no puede exceder los 200 caracteres</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <select formControlName="genero" class="form-control form-control-lg">
+                                <option value="" disabled selected>Seleccione género</option>
+    <option value="Masculino">Masculino</option>
+    <option value="Femenino">Femenino</option>
+    <option value="Otro">Otro</option>
+                            </select>
+                            <div class="text-danger"
+                                *ngIf="editForm.get('genero')?.hasError('required') && editForm.get('genero')?.touched">
+                                <span>El género <strong>es obligatorio</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <button type="button" routerLink="/customers" class="btn btn-outline-secondary btn-lg float-start">
+                                VOLVER
+                            </button>
+                            <button type="submit" [disabled]="editForm.invalid || loading" class="btn btn-info btn-lg float-end">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+                                {{ loading ? 'ACTUALIZANDO...' : 'ACEPTAR' }}
+                            </button>
                         </div>
                     </form>
                 </div>

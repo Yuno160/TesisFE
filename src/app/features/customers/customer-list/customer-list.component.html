@@ -27,9 +27,23 @@
                           <td>{{ element.telefono }}</td>
                           <td>{{ element.direccion }}</td>
                           <td>{{ element.edad }}</td>
+                          <td>{{ element.code }}</td>
                          <td>
                               <button mat-raised-button (click)="eliminarPaciente(element.carnet_identidad)"><img src="../../../../assets/images/images/trash (2).png"></button>
                               <button mat-raised-button [routerLink]="['/editpatient', element.carnet_identidad]"><img src="../../../../assets/images/images/edit.png"></button>
+                              <ng-container *ngIf="element.ya_calificado; else calificarBtn"> 
+                                <button mat-raised-button (click)="verEvaluacion(element.id_paciente)" 
+                                title="Ver Calificación">
+          <img src="../../../../assets/images/images/ver.png">
+        </button>
+      </ng-container>
+
+      <ng-template #calificarBtn>
+        <button mat-raised-button (click)="calificarPaciente(element.id_paciente)" title="Calificar Paciente">
+           <img src="../../../../assets/images/images/cerebral.png">
+        </button>
+      </ng-template>
+                             
                           </td>
                         </tr>
                       </tbody>

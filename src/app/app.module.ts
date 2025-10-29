@@ -13,7 +13,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { ChartModule } from 'angular-highcharts';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

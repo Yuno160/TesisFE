@@ -5,6 +5,7 @@ import { Reserva } from 'src/app/core/models/Reserva';
 import { ReservaService } from 'src/app/core/services/reserva.service';
 import { ThemePalette } from '@angular/material/core';
 import { PatientService } from 'src/app/core/services/patient.service';
+import { CrewsService } from 'src/app/core/services/crews.service';
 
 @Component({
   selector: 'app-add-reserva',
@@ -34,6 +35,15 @@ export class AddReservaComponent implements OnInit {
   id: string | null;
   selectedDate: Date | null = null; // Fecha seleccionada
   selectedTime: string = ''; // Hora seleccionada en formato 'HH:mm'
+  id_paciente: any = null;
+  fechaHora:string = '';
+  horaSeleccionada: string;
+  horasDisponibles: string[] = [
+    '08:00', '09:00', '10:00', '11:00', '12:00',
+    '13:00', '14:00', '15:00', '16:00', '17:00'
+  ];
+  crews: any[] = []; // Array que almacenará los crews disponibles
+  selectedCrew: number;
 
   public formGroup = new FormGroup({
     date: new FormControl(null, [Validators.required]),
@@ -47,7 +57,8 @@ export class AddReservaComponent implements OnInit {
     private router: Router,
     private _reservaService: ReservaService,
     private aRouter: ActivatedRoute,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private crewServices: CrewsService
   ) {
     this.reservaForm = this.fb.group({
       id_paciente: ['', Validators.required],
@@ -64,7 +75,9 @@ export class AddReservaComponent implements OnInit {
 
   ngOnInit(): void {
     this.esEditar();
+    this.getCrews();
   }
+ 
 
   agregarReserva() {
     const RESERVA: Reserva = {
@@ -150,8 +163,11 @@ export class AddReservaComponent implements OnInit {
 
     this.patientService.searchPatient(this.carnetIdentidad).subscribe(
       (data) => {
+        console.log(data)
         this.patient = data;
         this.errorMessage = '';
+        this.id_paciente = this.patient.id_paciente;
+        console.log("ID paciente:"+ this.id_paciente);
       },
       (error) => {
         this.errorMessage = error.error?.message || 'Paciente no encontrado.';
@@ -160,13 +176,61 @@ export class AddReservaComponent implements OnInit {
     );
   }
 
+  getCrews(){
+
+    this.crewServices.getCrews().subscribe(
+      (data) => {
+        console.log(data);
+        this.crews = data;
+        console.log("crews:"+ this.crews);
+      },
+      (error) => {
+        this.errorMessage = error.error?.message ;
+        console.log(this.errorMessage);
+        this.crews = null;
+      }
+    );
+
+  }
+  onCrewChange(event: any) {
+    console.log("Crew seleccionado:", event.value);
+  }
+
   createReservation() {
-    if (this.selectedDate && this.selectedTime) {
-      const reservationDateTime = `${this.selectedDate.toISOString().split('T')[0]}T${this.selectedTime}`;
-      console.log('Fecha y hora de reserva:', reservationDateTime);
-      // Aquí puedes enviar `reservationDateTime` al backend
+    if (this.selectedDate && this.horaSeleccionada && this.id_paciente && this.selectedCrew) {
+      const reservationDateTime = `${this.selectedDate.toISOString().split('T')[0]}T${this.horaSeleccionada}`;
+  
+      const reservationData = {
+        id_paciente: this.id_paciente,  // Asegúrate de que tienes este valor
+        id_crew: this.selectedCrew,         // ID del crew seleccionado
+        fecha_hora: reservationDateTime,    // Fecha y hora combinadas
+        estado: "Agendada"                  // Estado fijo en "Agendada"
+      };
+  
+      console.log('Enviando reserva:', reservationData);
+  
+      this._reservaService.createReservation(reservationData).subscribe(
+        (response) => {
+          console.log('Reserva creada con éxito:', response);
+          alert('Reserva creada con éxito');
+        },
+        (error) => {
+          console.error('Error al crear la reserva:', error);
+          console.error('Cuerpo del error:', error.error); // Muestra el mensaje de error del servidor
+          alert('Hubo un error al crear la reserva.');
+        }
+      );
     } else {
-      console.error('Por favor, selecciona una fecha y hora.');
+      console.error('Por favor, selecciona todos los campos necesarios.');
+      alert('Todos los campos son obligatorios.');
     }
   }
+  
+
+  fechaHoraReserva(){
+    this.fechaHora = `${this.selectedDate?.toLocaleDateString()} ${this.horaSeleccionada}`
+    console.log("fechaHora:"+ this.fechaHora);
+  }
+
+  
 }

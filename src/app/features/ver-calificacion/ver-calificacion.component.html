@@ -1,0 +1,57 @@
+<div class="calificacion-container">
+
+  <ng-container *ngIf="paciente; else loadingOrError">
+    <div class="patient-header">
+      <div class="patient-avatar">
+        <span>{{ paciente.nombre | slice:0:1 }}</span> 
+      </div>
+      <div class="patient-details">
+        <h1 class="patient-name">{{ paciente.nombre }} </h1>
+        <span class="patient-meta">{{ paciente.edad }} años</span>
+        <span class="patient-meta">C.I. {{ paciente.carnet_identidad }}</span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #loadingOrError>
+    <div *ngIf="isLoading" class="loading-message">
+      <p>Cargando datos...</p>
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+      <p>{{ errorMessage }}</p>
+    </div>
+  </ng-template>
+
+  <div *ngIf="calificacion" class="calificacion-details">
+    
+    <h3>Observaciones Generales</h3>
+    <div class="observaciones-box">
+      <p>{{ calificacion.observaciones || 'No se registraron observaciones.' }}</p>
+    </div>
+
+    <hr>
+    
+    <h3>Códigos CIF Seleccionados</h3>
+    <div class="selected-codes-list">
+      
+      <div *ngFor="let code of calificacion.codigos" class="selected-tag read-only">
+        <i class="fas fa-check-circle"></i> 
+        <span>
+          <strong>{{ code.codigo }}</strong> {{ code.descripcion }}
+        </span>
+      </div>
+      
+      <p *ngIf="calificacion.codigos.length === 0" class="text-muted">
+        No se seleccionaron códigos para esta calificación.
+      </p>
+    </div>
+
+    <hr>
+
+    <a [href]="getImprimirUrl()" target="_blank" class="btn-guardar">
+      Imprimir Carnet
+    </a>
+
+  </div>
+
+</div>

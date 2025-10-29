@@ -75,6 +75,12 @@ const appRoutes: Routes = [
     loadChildren: () => import('./features/about/about.module').then(m => m.AboutModule),
     canActivate: [AuthGuard]
   },
+ {
+    path: 'calificacion', // El PREFIJO
+    loadChildren: () => import('./features/calificacion/calificacion.module').then(m => m.CalificacionModule),
+    canActivate: [AuthGuard]
+  },
+  
   {
     path: '**',
     redirectTo: 'dashboard',

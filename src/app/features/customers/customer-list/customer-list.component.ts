@@ -1,14 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { NGXLogger } from 'ngx-logger';
 import { Title } from '@angular/platform-browser';
 import { NotificationService } from 'src/app/core/services/notification.service';
-
-import html2canvas from "html2canvas";
 import { PatientService } from '../../../core/services/patient.service';
 import { GlobalService } from '../../../core/services/global.service';
 import { Patient } from '../../../core/models/Patient';
+import { Router } from '@angular/router'
 
 
 @Component({
@@ -27,7 +25,8 @@ export class CustomerListComponent implements OnInit {
     private notificationService: NotificationService,
     private titleService: Title,
     private _PatientService: PatientService,
-    private csvService : GlobalService
+    private csvService : GlobalService,
+    private router: Router
   ) { }
 
   listPatients : Patient[]=[];
@@ -40,17 +39,6 @@ export class CustomerListComponent implements OnInit {
 
   }
 
-  /* agregarPaciente(){
-    html2canvas(document.querySelector("#contenido"),{
-      allowTaint:true,
-      useCORS:true
-    }).then(canvas =>{
-      this.imagenCreada = canvas.toDataURL();
-
-    });
-
-    this.imgCreada = true;
-  } */
 
   obtenerPacientes (){
     this._PatientService.getPatients().subscribe(data =>{
@@ -61,21 +49,48 @@ export class CustomerListComponent implements OnInit {
     })
   }
 
-  eliminarPaciente(carnet_identidad: string): void {
+eliminarPaciente(carnet_identidad: string): void {
     if (confirm('¿Estás seguro de que deseas eliminar este paciente?')) {
-        this._PatientService.deletePatient(carnet_identidad).subscribe(
-            (response) => {
-                console.log('Paciente eliminado:', response);
-                alert('Paciente eliminado correctamente.');
-                this.obtenerPacientes(); // Actualizar la lista de pacientes
+        this._PatientService.deletePatient(carnet_identidad).subscribe({
+            next: (response) => {
+                if (response.isConflict) {
+                    // Mostrar alerta con detalles de dependencias
+                    const dependencias = Object.entries(response.dependencies)
+                        .map(([key, value]) => `${key}: ${value}`)
+                        .join('\n');
+                    
+                    if (confirm(
+                        `No se puede eliminar. El paciente tiene:\n${dependencias}\n\n¿Deseas archivar el paciente en lugar de eliminarlo?`
+                    )) {
+                      alert('Paciente archivado correctamente.');
+                        //this.archivarPaciente(carnet_identidad); // Implementa este método
+                    }
+                } else {
+                    alert('Paciente eliminado correctamente.');
+                    this.obtenerPacientes();
+                }
             },
-            (error) => {
-                console.error('Error al eliminar el paciente:', error);
-                alert('Hubo un error al eliminar el paciente.');
+            error: (error) => {
+                console.error('Error:', error);
+                alert(error.status === 409 
+                    ? 'El paciente tiene registros asociados (ver consola para detalles)'
+                    : 'Error inesperado al eliminar');
             }
-        );
+        });
     }
 }
+
+calificarPaciente(idPaciente: number): void {
+    console.log('Navegando a calificar paciente con ID:', idPaciente);
+    // Navega a la ruta que definiremos para la calificación, pasando el ID
+    this.router.navigate(['/calificacion/crear', idPaciente]);
+  }
+
+  // 4. Añade el método verEvaluacion
+  verEvaluacion(idPaciente: number): void {
+   console.log('Navegando a VER calificación con ID:', idPaciente);
+  // Esto navegará a '/calificacion/ver/16'
+  this.router.navigate(['/calificacion/ver', idPaciente]);}
 
 
   downloadCsv(){

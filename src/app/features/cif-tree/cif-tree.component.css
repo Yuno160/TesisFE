@@ -1,0 +1,10 @@
+/* src/app/cif-tree/cif-tree.component.css */
+
+/* Usamos :host para seleccionar solo los <ul> 
+  que están directamente en este componente. 
+*/
+:host ul.tree-root {
+  list-style-type: none; /* ¡Sin bullets! */
+  padding-left: 0;       /* Sin indentación para el nivel raíz */
+  margin: 0;
+}

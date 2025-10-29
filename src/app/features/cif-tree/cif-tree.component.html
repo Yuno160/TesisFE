@@ -1,0 +1,24 @@
+<div class="tree-container">
+  
+  <ng-container *ngIf="filteredTree$ | async as nodes; else loadingOrError"> <ul class="tree-root">
+      <li *ngFor="let node of nodes">
+        <app-tree-node 
+          [node]="node"
+          (nodeToggled)="onNodeToggle($event)"
+          [searchTerm]="searchTerm" >
+        </app-tree-node>
+      </li>
+    </ul>
+
+  </ng-container>
+
+  <ng-template #loadingOrError>
+    <div *ngIf="errorMsg; else loading">
+      <p class="error">{{ errorMsg }}</p>
+    </div>
+    <ng-template #loading>
+      <p>Cargando árbol...</p>
+    </ng-template>
+  </ng-template>
+
+</div>

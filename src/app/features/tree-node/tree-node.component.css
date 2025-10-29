@@ -1,0 +1,53 @@
+/* src/app/tree-node/tree-node.component.css */
+
+/* El :host se refiere al contenedor <app-tree-node> */
+:host {
+  display: block; /* Asegura que cada nodo ocupe su propia línea */
+}
+
+/* El contenedor de la fila (flecha, check, texto) */
+.node-row {
+  display: flex;          /* ¡La clave! Activa Flexbox */
+  align-items: center;    /* ¡Centra todo verticalmente! */
+  cursor: pointer;        /* Manito en toda la fila */
+  
+  /* Efectos visuales */
+  border-radius: 4px;
+  padding: 3px 5px;
+  margin-bottom: 2px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Efecto hover para que se sienta interactivo */
+.node-row:hover {
+  background-color: #f0f0f0;
+}
+
+/* El indicador de flecha */
+.toggle-indicator {
+  display: inline-block;
+  width: 1.5em; /* Ancho fijo para que no "salte" */
+  text-align: center;
+  color: #555;
+  font-size: 0.9em; /* Flecha un poco más pequeña */
+}
+
+/* El checkbox */
+.node-checkbox {
+  margin-right: 8px; /* Espacio entre el check y el texto */
+  margin-left: 2px;
+  cursor: pointer; /* Manito en el checkbox */
+}
+
+/* El texto */
+.node-label {
+  flex-grow: 1; /* Ocupa el resto del espacio */
+  user-select: none; /* Evita que se seleccione el texto al hacer clic */
+}
+
+/* La lista de hijos <ul> */
+.children-list {
+  list-style-type: none; /* ¡Adiós bullets! */
+  padding-left: 32px;  /* La indentación (juega con este valor) */
+  margin: 5px 0 0 0;
+}
