@@ -7,10 +7,7 @@ import { CustomerListComponent } from './customer-list/customer-list.component';
 const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent,
-    children: [
-      { path: '', component: CustomerListComponent },
-    ]
+    component: CustomerListComponent // <-- Directo al componente, sin Layout
   }
 ];
 

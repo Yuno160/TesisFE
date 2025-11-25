@@ -1,59 +1,90 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { delay, map } from 'rxjs/operators';
-import * as jwt_decode from 'jwt-decode';
-import * as moment from 'moment';
-import { Observable } from 'rxjs';
-
-import { environment } from '../../../environments/environment';
-import { of, EMPTY } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class AuthenticationService {
 
-    private URL = 'http://localhost:3000/api/login'
-    constructor(private http: HttpClient,
-        @Inject('LOCALSTORAGE') private localStorage: Storage) {
-    }
+  // 1. URL Correcta según tu backend
+  private API_URL = 'http://localhost:3000/api/auth'; 
 
-    signUp(user: any){
-        return this.http.post<any>(this.URL + '/signup', user);
-    }
+  // BehaviorSubject: Nos permite saber en tiempo real si el usuario está logueado
+  private currentUserSubject: BehaviorSubject<any>;
+  public currentUser: Observable<any>;
 
-    login(nombre_usuario: string, contrasena: string): Observable<any> {
-        return this.http.post(this.URL, { nombre_usuario, contrasena });
-      }
+  constructor(private http: HttpClient, private router: Router) {
+    // Al iniciar, leemos si ya hay un usuario guardado en el navegador
+    const storedUser = localStorage.getItem('currentUser');
+    this.currentUserSubject = new BehaviorSubject<any>(storedUser ? JSON.parse(storedUser) : null);
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
 
-    logout(): void {
-        // clear token remove user from local storage to log user out
-        this.localStorage.removeItem('currentUser');
-    }
+  // Getter para obtener el valor actual sin suscribirse
+  public get currentUserValue() {
+    return this.currentUserSubject.value;
+  }
 
-    getCurrentUser(): any {
-        // TODO: Enable after implementation
-        // return JSON.parse(this.localStorage.getItem('currentUser'));
-        return {
-            token: 'aisdnaksjdn,axmnczm',
-            isAdmin: true,
-            email: 'john.doe@gmail.com',
-            id: '12312323232',
-            alias: 'john.doe@gmail.com'.split('@')[0],
-            expiration: moment().add(1, 'days').toDate(),
-            fullName: 'John Doe'
-        };
-    }
+  /**
+   * INICIAR SESIÓN
+   * Envía 'usuario' y 'password' al backend.
+   */
+  login(usuario: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}/login`, { usuario, password })
+      .pipe(map(user => {
+        // Si el backend responde con el token y el usuario:
+        if (user && user.token) {
+          // 2. Guardamos la sesión en el navegador
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          
+          // Avisamos a toda la app que el usuario se conectó
+          this.currentUserSubject.next(user);
+        }
+        return user;
+      }));
+  }
 
-    passwordResetRequest(email: string) {
-        return of(true).pipe(delay(1000));
-    }
+  /**
+   * CERRAR SESIÓN
+   */
+  logout() {
+    // Borramos los datos del navegador
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
+    
+    // Redirigimos al Login
+    this.router.navigate(['/auth/login']);
+  }
 
-    changePassword(email: string, currentPwd: string, newPwd: string) {
-        return of(true).pipe(delay(1000));
-    }
+  /**
+   * OBTENER USUARIO ACTUAL (Datos reales)
+   * Devuelve el objeto { id, nombre, rol, token ... }
+   */
+  getCurrentUser(): any {
+    return this.currentUserSubject.value;
+  }
 
-    passwordReset(email: string, token: string, password: string, confirmPassword: string): any {
-        return of(true).pipe(delay(1000));
-    }
+  /**
+   * VERIFICAR SI ES ADMIN
+   * Útil para ocultar botones en el HTML
+   */
+  isAdmin(): boolean {
+    const user = this.currentUserValue;
+    return user && user.usuario && user.usuario.rol === 'ADMIN';
+  }
+
+  /**
+   * VERIFICAR SI ESTÁ LOGUEADO
+   */
+  isAuthenticated(): boolean {
+    return !!this.currentUserValue; // Devuelve true si existe usuario
+  }
+
+  // --- Métodos que no usaremos por ahora (SignUp, Reset) ---
+  // Como en tu tesis el admin crea los usuarios, 'signUp' público no es necesario.
+  // Los he quitado para limpiar el código, pero podemos agregarlos si el Admin
+  // necesita una pantalla para "Crear Usuario".
 }

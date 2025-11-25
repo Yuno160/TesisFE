@@ -4,12 +4,11 @@ import { LayoutComponent } from 'src/app/shared/layout/layout.component';
 import { IconsComponent } from './icons/icons.component';
 
 const routes: Routes = [
+  
+
   {
     path: '',
-    component: LayoutComponent,
-    children: [
-      { path: '', component: IconsComponent },
-    ]
+    component: IconsComponent // <-- Directo al componente, sin Layout
   }
 ];
 

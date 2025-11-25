@@ -5,12 +5,10 @@ import { LayoutComponent } from 'src/app/shared/layout/layout.component';
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 
 const routes: Routes = [
+  
   {
     path: '',
-    component: LayoutComponent,
-    children: [
-      { path: '', component: DashboardHomeComponent },
-    ]
+    component: DashboardHomeComponent // <-- Directo al componente, sin Layout
   }
 ];
 

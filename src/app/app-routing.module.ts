@@ -2,12 +2,20 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './core/guards/auth.guard';
+import { LayoutComponent } from './shared/layout/layout.component';
 
 const appRoutes: Routes = [
-  {
+  
+ {
     path: 'auth',
     loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule),
   },
+
+  {
+    path: '',
+    component: LayoutComponent, // <-- ¡AQUÍ ESTÁ LA CLAVE!
+    canActivate: [AuthGuard],   // Protegemos todo el grupo
+    children: [
   {
     path: 'dashboard',
     loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
@@ -23,25 +31,16 @@ const appRoutes: Routes = [
     loadChildren: () => import('./features/customers/add-patient/add-patient.module').then(m => m.AddPatientModule),
     canActivate: [AuthGuard]
   },
-  {
-    path: 'addreserva',
-    loadChildren: () => import('./features/typography/add-reserva/add-reserva.module').then(m => m.AddReservaModule),
-    canActivate: [AuthGuard]
-  },
+  
   {
     path: 'editpatient/:carnet_identidad',
     loadChildren: () => import('./features/customers/edit-patient/edit-patient.module').then(m => m.EditPatientModule),
     canActivate: [AuthGuard]
   },
-  {
-    path: 'editreserva/:id',
-    loadChildren: () => import('./features/typography/add-reserva/add-reserva.module').then(m => m.AddReservaModule),
-    canActivate: [AuthGuard]
-  },
   
   {
     path: 'users',
-    loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule),
+    loadChildren: () => import('./features/usuarios--routing/usuario/usuario.module').then(m => m.UsuarioModule),
     canActivate: [AuthGuard]
   },
 
@@ -55,11 +54,7 @@ const appRoutes: Routes = [
     loadChildren: () => import('./features/generar-carnet/generar-carnet.module').then(m => m.GenerarCarnetModule),
     canActivate: [AuthGuard]
   },
-  {
-    path: 'account',
-    loadChildren: () => import('./features/account/account.module').then(m => m.AccountModule),
-    canActivate: [AuthGuard]
-  },
+  
   {
     path: 'icons',
     loadChildren: () => import('./features/icons/icons.module').then(m => m.IconsModule),
@@ -79,13 +74,10 @@ const appRoutes: Routes = [
     path: 'calificacion', // El PREFIJO
     loadChildren: () => import('./features/calificacion/calificacion.module').then(m => m.CalificacionModule),
     canActivate: [AuthGuard]
-  },
-  
-  {
-    path: '**',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
   }
+   ]
+  },
+
 ];
 
 @NgModule({

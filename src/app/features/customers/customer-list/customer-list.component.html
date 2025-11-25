@@ -16,7 +16,7 @@
                           <th scope="col">Phone</th>
                           <th scope="col">Address</th>
                           <th scope="col">Age</th>
-                          <th scope="col">Code</th>
+                          <th scope="col">Actions</th>
                           <th scope="col"></th>
                         </tr>
                       </thead>
@@ -27,7 +27,6 @@
                           <td>{{ element.telefono }}</td>
                           <td>{{ element.direccion }}</td>
                           <td>{{ element.edad }}</td>
-                          <td>{{ element.code }}</td>
                          <td>
                               <button mat-raised-button (click)="eliminarPaciente(element.carnet_identidad)"><img src="../../../../assets/images/images/trash (2).png"></button>
                               <button mat-raised-button [routerLink]="['/editpatient', element.carnet_identidad]"><img src="../../../../assets/images/images/edit.png"></button>

@@ -20,6 +20,7 @@ export interface CalificacionGuardada {
   observaciones: string;
   fecha_creacion: string;
   codigos: CifNode[]; // Un array de {codigo, descripcion}
+  fecha_vencimiento?: string;
 }
 // -----------------------------
 

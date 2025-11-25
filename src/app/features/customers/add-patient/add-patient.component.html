@@ -46,14 +46,16 @@
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <input type="text" formControlName="genero" class="form-control form-control-lg"
-                                placeholder="Genero">
-                            <div class="text-danger"
-                                *ngIf="productoForm.get('direccion')?.hasError('required') && productoForm.get('direccion')?.touched">
-                                <span>Genero <strong>is Mandatory</strong></span>
-                            </div>
-                        </div>
+                        <mat-form-field appearance="outline" class="w-100">
+  <mat-label>Género</mat-label>
+  <mat-select formControlName="genero">
+    <mat-option value="Femenino">Femenino</mat-option>
+    <mat-option value="Masculino">Masculino</mat-option>
+  </mat-select>
+  <mat-error *ngIf="productoForm.get('genero')?.hasError('required')">
+    El género es requerido
+  </mat-error>
+</mat-form-field>
 
                         
                         <div class="mb-3">

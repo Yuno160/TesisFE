@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
  import { AuthenticationService } from 'src/app/core/services/auth.service';
 import { SpinnerService } from '../../core/services/spinner.service';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
+import { ReservaService } from '../../core/services/reserva.service';
 
 @Component({
     selector: 'app-layout',
@@ -19,6 +20,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     showSpinner: boolean = false;
     userName: string = "";
     isAdmin: boolean = false;
+    notificacionesCount: number = 0;
 
     private autoLogoutSubscription: Subscription = new Subscription;
 
@@ -26,7 +28,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         private media: MediaMatcher,
         public spinnerService: SpinnerService,
         private authService: AuthenticationService,
-        private authGuard: AuthGuard) {
+        private authGuard: AuthGuard,
+    private reservaService: ReservaService) {
 
         this.mobileQuery = this.media.matchMedia('(max-width: 1000px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -45,6 +48,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
         this.autoLogoutSubscription = timer$.subscribe(() => {
             this.authGuard.canActivate();
         });
+
+        this.cargarNotificaciones();
     }
 
     ngOnDestroy(): void {
@@ -55,5 +60,21 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngAfterViewInit(): void {
         this.changeDetectorRef.detectChanges();
+    }
+
+    onLogout() {
+        this.authService.logout(); 
+        // Esta función ya se encarga de borrar el localStorage 
+        // y redirigir al login.
+    }
+
+    cargarNotificaciones() {
+        this.reservaService.getConteoHoy().subscribe(
+            (data) => {
+                this.notificacionesCount = data.total;
+                console.log('Citas para hoy:', this.notificacionesCount);
+            },
+            (error) => console.error('Error cargando notificaciones', error)
+        );
     }
 }

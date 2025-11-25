@@ -1,104 +1,110 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import html2canvas from "html2canvas";
-import { ReservaService } from '../../../core/services/reserva.service';
-import { Reserva } from '../../../core/models/Reserva';
-import { NGXLogger } from 'ngx-logger';
-import { Title } from '@angular/platform-browser';
-import { NotificationService } from 'src/app/core/services/notification.service';
-import { GlobalService } from '../../../core/services/global.service';
+import { CalendarOptions, EventInput } from '@fullcalendar/core'; 
+import interactionPlugin from '@fullcalendar/interaction'; 
+import timeGridPlugin from '@fullcalendar/timegrid';     
+import dayGridPlugin from '@fullcalendar/daygrid';         
+import { MatDialog } from '@angular/material/dialog';
+import { ReservaModalComponent } from 'src/app/features/icons/reserva-modal/reserva-modal.component'; 
+import { ReservaService } from 'src/app/core/services/reserva.service';
+
 @Component({
   selector: 'app-typography',
   templateUrl: './typography.component.html',
-  styleUrls: ['./typography.component.css']
+  styleUrls: ['./typography.component.css'],
 })
-export class TypographyComponent implements OnInit{
-  nombre: string  ;
-  id: string  ;
-  direccion: string  ;
-  
-  porcentaje: string  ;
-  telefono:number;
-  edad:number ;
-  carnet:number;
-  FechaReserva: string;
-  HoraReserva:string;
-  cif:string  ;
-  fecha: string  ;
-  vence: string  ;
-  displayedColumns: string[] = ['nombre', 'carnet', 'telefono', 'direccion', 'fecha', 'hora'];
+export class TypographyComponent implements OnInit {
 
-  constructor(private _reservaService: ReservaService,
-    private logger: NGXLogger,
-    private notificationService: NotificationService,
-    private titleService: Title,
-    private csvService : GlobalService    ) { }
-  name = new FormControl();
-  ci = new FormControl();
-  phone = new FormControl();
-  adress = new FormControl();
-  date = new FormControl();
-  time = new FormControl();
-  imgCreada = false;
-  listReserva: Reserva[] = [];
-  
+  calendarOptions: CalendarOptions = {
+    plugins: [
+      interactionPlugin,
+      timeGridPlugin,
+      dayGridPlugin
+    ],
+    initialView: 'timeGridWeek', 
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    weekends: true,
+    editable: false,  
+    selectable: true,  
+    businessHours: { 
+      daysOfWeek: [ 1, 2, 3, 4, 5 ], 
+      startTime: '08:00', 
+      endTime: '18:00', 
+    },
+    slotDuration: '01:00:00', 
+    slotLabelInterval: '01:00',
+    dateClick: this.handleDateClick.bind(this),
+    eventClick: this.handleEventClick.bind(this),
+    events: [] 
+  };
+
+  constructor(
+    public dialog: MatDialog,
+    private reservasService: ReservaService 
+  ) {}
 
   ngOnInit(): void {
-    this.titleService.setTitle('angular-material-template - Bookings');
-    this.logger.log('Bookings loaded');
-    this.notificationService.openSnackBar('Bookings loaded');
-    this.obtenerReserva();
+    this.cargarReservas();
   }
 
-  obtenerReserva(){
-    this._reservaService.getReserva().subscribe(data =>{
-      console.log(data);
-      this.listReserva = data;
-    },error => {
-      console.log(error);
-    })
+  cargarReservas() {
+    this.reservasService.getAll().subscribe(
+      (eventos) => {
+        this.calendarOptions.events = eventos;
+      },
+      (error) => {
+        console.error('Error al cargar las reservas:', error);
+      }
+    );
+  }
+  
+  // Función para CREAR (Clic en hora vacía)
+  handleDateClick(arg: any) {
+    const dataParaModal = { 
+      modo: 'Crear',
+      fecha: arg.date 
+    };
+
+    // --- ¡CONSOLE LOG AÑADIDO! ---
+    console.log('Abriendo modal (handleDateClick):', dataParaModal);
+    // ---
+
+    const dialogRef = this.dialog.open(ReservaModalComponent, {
+      width: '600px',
+      data: dataParaModal // Pasamos los datos
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.cargarReservas(); 
+      }
+    });
   }
 
-  eliminarReserva(id:any){
-    this._reservaService.eliminarReserva(id).subscribe(data =>{
-    this.obtenerReserva();
-    }, error => {
-      console.log(error);
-    })
+  // Función para EDITAR (Clic en reserva existente)
+  handleEventClick(clickInfo: any) {
+    const dataParaModal = {
+      modo: 'Editar',
+      reservaId: clickInfo.event.id,
+      fecha: clickInfo.event.start 
+    };
+
+    // --- ¡CONSOLE LOG AÑADIDO! ---
+    console.log('Abriendo modal (handleEventClick):', dataParaModal);
+    // ---
+
+    const dialogRef = this.dialog.open(ReservaModalComponent, {
+      width: '600px',
+      data: dataParaModal // Pasamos los datos
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.cargarReservas(); 
+      }
+    });
   }
-
-  downloadCsv(){
-    console.log("lista pacientes" )
-    console.log(this.listReserva)
-    this.csvService.cvsDownload(this.displayedColumns, this.listReserva);
-  }
-
-  /* guardarReserva(){
-    console.log(this.nombre)
-    console.log(this.FechaReserva)
-    let reservita= new Reserva();
-    reservita._id = this.id;
-    reservita.nombre = this.nombre;
-    reservita.carnet = this.carnet;
-    reservita.telefono = this.telefono;
-    reservita.direccion = this.direccion;
-    reservita.fechaReserva = this.FechaReserva;
-
-    this._reservaService.guardarReserva(reservita).subscribe(data =>{
-      console.log('La reserva fue registrada correctamente');
-
-    }, error =>{
-      console.log(error);
-    }
-    )
-
-    
-  } */
-
-  addReserva(){
-    console.log("ADD RESERVA")
-  }
-
-  editReserva(id:any){}
-
 }

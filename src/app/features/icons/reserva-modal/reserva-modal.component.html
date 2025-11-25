@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>{{ tituloModal }}</h2>
+
+<p class="text-muted">
+  Fecha y Hora: <strong>{{ fechaHoraClickeada | date:'full' }}</strong>
+</p>
+
+<mat-dialog-content>
+  <div *ngIf="isLoading" class="spinner-overlay">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+
+  <div class="mb-3" [formGroup]="searchForm">
+    <h5 *ngIf="modo === 'Crear'">1. Buscar Paciente Existente</h5>
+    <h5 *ngIf="modo === 'Editar'">1. Paciente</h5>
+
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Carnet de Identidad *</mat-label>
+      <input matInput formControlName="carnetBusqueda" [readonly]="modo === 'Editar'" (keyup.enter)="onBuscarPaciente()">
+      
+      <button *ngIf="modo === 'Crear'" mat-icon-button matSuffix (click)="onBuscarPaciente()" [disabled]="searchForm.invalid">
+        <i class="fas fa-search"></i>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="pacienteEncontrado" class="alert alert-success">
+    <strong>Paciente Seleccionado:</strong>
+    <p class="mb-0">{{ pacienteEncontrado.nombre }}</p>
+  </div>
+  <div *ngIf="pacienteNoEncontrado" class="alert alert-warning">
+    Paciente no encontrado.
+    <button mat-button color="primary" (click)="irACrearPaciente()">(+ Crear Paciente Nuevo)</button>
+  </div>
+
+
+  <div class="mt-4" [formGroup]="reservaForm"> 
+    <h5>2. Observaciones de la Reserva</h5>
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Observaciones (Opcional)</mat-label>
+      <textarea matInput formControlName="observaciones"></textarea>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  
+  <button *ngIf="modo === 'Editar'" mat-button color="warn" class="me-auto" (click)="onEliminarReserva()" [disabled]="isLoading">
+    <mat-icon>delete</mat-icon> 
+    Eliminar
+  </button>
+  
+  <button mat-button (click)="onCancelar()">Cancelar</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onGuardarReserva()"
+    [disabled]="reservaForm.invalid || isLoading"> {{ (modo === 'Crear') ? 'Guardar Reserva' : 'Actualizar Reserva' }}
+  </button>
+</mat-dialog-actions>

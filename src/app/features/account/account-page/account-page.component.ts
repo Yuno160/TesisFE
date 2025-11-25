@@ -11,7 +11,7 @@ export class AccountPageComponent implements OnInit {
   constructor(private titleService: Title) { }
 
   ngOnInit() {
-    this.titleService.setTitle('angular-material-template - Account');
+    this.titleService.setTitle('SISCIF');
   }
 
 }

@@ -113,4 +113,16 @@ editPatient(carnet_identidad: string, patient: Patient): Observable<{success: bo
       })
     );
   }
+
+  buscarPorCarnet(carnet: string): Observable<any> {
+   // --- LOG 2 ---
+    const url = `${this.url}/ci/${carnet}`;
+    console.log('--- FE: 2. Servicio (Service) ---');
+    console.log('Servicio recibe carnet:', carnet);
+    console.log('Llamando a la URL:', url);
+    // ---
+
+    // Asegúrate de que esta URL coincida con tu ruta en patient.routes.js
+    return this.http.get<any>(url);
+  }
 }

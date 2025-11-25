@@ -32,7 +32,7 @@ export class CustomerListComponent implements OnInit {
   listPatients : Patient[]=[];
 
   ngOnInit() {
-    this.titleService.setTitle('angular-material-template - Patients');
+    this.titleService.setTitle('CIFSIS');
     this.logger.log('Patients loaded');
     this.notificationService.openSnackBar('Patients loaded');
     this.obtenerPacientes();

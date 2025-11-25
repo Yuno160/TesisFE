@@ -1,42 +1,5 @@
+<div class="container-fluid mt-4">
+  
+  <full-calendar [options]="calendarOptions"></full-calendar>
 
-<div >
-  <div class="row">
-      <div class="col-lg-8 offset-lg-2">
-          <div class="card">
-              <div class="card-body text-center">
-                <h2>BOOKING</h2>
-                <button mat-raised-button (click)="downloadCsv()"><img src="../../../../assets/images/images/export.png"></button>
-                  <button mat-raised-button routerLink="/addreserva"><img src="../../../../assets/images/images/add.png"></button>
-                  <table *ngIf="listReserva.length > 0" class="table table-striped mt-3">
-                      <thead>
-                        <tr>
-                          <th scope="col">Nombre</th>
-                          <th scope="col">Carnet</th>
-                          <th scope="col">Estado</th>
-                          <th scope="col">Direccion</th>
-                          <th scope="col">Fecha</th>
-                          <th scope="col">Telefono</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let element of listReserva">
-                          <td>{{ element.nombre }}</td>
-                          <td>{{ element.carnet_identidad }}</td>
-                          <td>{{ element.estado }}</td>
-                          <td>{{ element.direccion }}</td>
-                          <td>{{ element.fecha_hora }}</td>
-                          <td>{{ element.telefono }}</td>
-                          <td>
-                          <!--     <button mat-raised-button (click)="eliminarReserva(element._id)"><img src="../../../../assets/images/images/trash (2).png"></button>
-                              <button mat-raised-button [routerLink]="['/editreserva', element._id]"><img src="../../../../assets/images/images/edit.png"></button>
-                          --> </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="listReserva.length == 0">No hay productos para mostrar</h5>
-              </div>
-          </div>
-      </div>
-  </div>
-</div> 
-
+</div>

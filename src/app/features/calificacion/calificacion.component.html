@@ -2,17 +2,23 @@
 
   <ng-container *ngIf="paciente; else patientLoading">
     <div class="patient-header">
+      <div class="patient-avatar">
+        
+      </div>
       <div class="patient-details">
         <h1 class="patient-name">{{ paciente.nombre }}</h1>
-        <h3 class="patient-name">{{ paciente.edad }} años</h3>
-        <h3 class="patient-name">{{ paciente.carnet_identidad }}</h3>
+        <span class="patient-meta">{{ paciente.edad }} años</span>
+        <span class="patient-meta">C.I. {{ paciente.carnet_identidad }}</span>
       </div>
     </div>
   </ng-container>
 
   <ng-template #patientLoading>
-    <div class="patient-header">
+    <div *ngIf="isLoading" class="patient-header">
       <p>Cargando datos del paciente...</p>
+    </div>
+    <div *ngIf="errorMessage && !isLoading" class="patient-header">
+      <p class="error-message">{{ errorMessage }}</p>
     </div>
   </ng-template>
   <form [formGroup]="calificacionForm" (ngSubmit)="guardarCalificacion()">
@@ -23,42 +29,59 @@
     <hr>
 
     <h3>Seleccione los Códigos CIF correspondientes:</h3>
-    
+
     <div class="cif-selection-layout">
-      
+
       <div class="cif-tree-panel">
-        <div class="search-box">
-          <input 
-            type="text" 
-            placeholder="Buscar código o descripción..." 
-            [(ngModel)]="searchTerm" 
-            (ngModelChange)="onSearchTermChange()"
-            [ngModelOptions]="{standalone: true}"
-          />
-          <i class="fas fa-search"></i> 
-        </div>
+        
+        <mat-tab-group animationDuration="0ms">
 
-        <div class="tree-wrapper">
-          <app-cif-tree 
-            [searchTerm]="searchTerm" 
-            (selectionUpdate)="onTreeSelectionChange($event)"
-          >
-          </app-cif-tree>
-        </div>
-      </div>
+          <mat-tab label="Búsqueda Manual / Árbol">
+            <div class="tab-content-wrapper">
+              
+              <div class="search-box">
+                <input
+                  type="text"
+                  placeholder="Buscar código o descripción..."
+                  [(ngModel)]="searchTerm"
+                  (ngModelChange)="onSearchTermChange()"
+                  [ngModelOptions]="{standalone: true}"
+                />
+                <i class="fas fa-search"></i>
+              </div>
 
-      <div class="cif-selected-panel">
+              <div class="tree-wrapper">
+                <app-cif-tree
+                  [searchTerm]="searchTerm"
+                  (selectionUpdate)="onTreeSelectionChange($event)"
+                >
+                </app-cif-tree>
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Asistente Experto">
+            <div class="tab-content-wrapper">
+              <app-experto-wizard
+                (sugerenciasGeneradas)="onSugerenciasExperto($event)"
+              >
+              </app-experto-wizard>
+            </div>
+          </mat-tab>
+
+        </mat-tab-group>
+      </div> <div class="cif-selected-panel">
         <h4>Tu Selección:</h4>
         <div class="selected-codes-list">
           
-          <ng-container *ngIf="calificacionForm.get('cifCodes')?.value.length > 0; else noSelection">
-            <div *ngFor="let selectedCode of calificacionForm.get('cifCodes')?.value" class="selected-tag">
-              <i class="fas fa-check-circle"></i> 
+          <ng-container *ngIf="cifCodesArray.controls.length > 0; else noSelection">
+            <div *ngFor="let control of cifCodesArray.controls" class="selected-tag">
+              <i class="fas fa-check-circle"></i>
               <span>
-                <strong>{{ selectedCode.codigo }}</strong> {{ selectedCode.descripcion }}
+                <strong>{{ control.value.codigo }}</strong> {{ control.value.descripcion }}
               </span>
-              <button type="button" class="remove-tag-btn" (click)="removeSelectedCode(selectedCode.codigo)">
-                <i class="fas fa-times"></i> 
+              <button type="button" class="remove-tag-btn" (click)="removeSelectedCode(control.value.codigo)">
+                <i class="fas fa-times"></i>
               </button>
             </div>
           </ng-container>
@@ -67,12 +90,8 @@
             <p class="text-muted">No has seleccionado ningún código.</p>
           </ng-template>
         </div>
-      </div>
+      </div> </div> <hr>
 
-    </div>
-
-    <hr>
-    
     <button type="submit" class="btn-guardar" [disabled]="calificacionForm.invalid">
       Guardar Calificación
     </button>

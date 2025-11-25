@@ -24,6 +24,17 @@
 
   <div *ngIf="calificacion" class="calificacion-details">
     
+    <div class="fechas-info">
+        <span class="fecha-item">
+            <strong>Fecha Calificación:</strong> 
+            {{ calificacion.fecha_creacion | date:'dd/MM/yyyy' }} 
+        </span>
+        <span class="fecha-item">
+            <strong>Válido Hasta:</strong> 
+            {{ calificacion.fecha_vencimiento | date:'dd/MM/yyyy' }} 
+        </span>
+    </div>
+    
     <h3>Observaciones Generales</h3>
     <div class="observaciones-box">
       <p>{{ calificacion.observaciones || 'No se registraron observaciones.' }}</p>

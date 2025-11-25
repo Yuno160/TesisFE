@@ -1,0 +1,62 @@
+/* Contenedor principal */
+.container {
+  padding: 20px;
+  max-width: 100%; /* Asegura que el contenedor pueda crecer */
+}
+
+/* El contenedor de la tabla (la tarjeta blanca con sombra) */
+.table-container {
+  display: block;
+  width: 100%;
+  overflow-x: auto; /* Permite scroll horizontal si la pantalla es muy pequeña */
+  border-radius: 8px; /* Bordes redondeados para que se vea moderno */
+  background: white;  /* Fondo blanco para que resalte sobre el gris */
+}
+
+/* La tabla en sí */
+table {
+  width: 100%; /* ¡ESTA ES LA CLAVE! Fuerza a la tabla a ocupar todo el ancho */
+  border-collapse: separate; /* Mejora el renderizado de bordes */
+}
+
+/* Encabezados */
+th.mat-header-cell {
+  font-weight: bold;
+  font-size: 14px;
+  color: #555;
+  background-color: #f9f9f9; /* Un gris muy suave para el encabezado */
+  padding: 16px; /* Más espacio */
+}
+
+/* Celdas del cuerpo */
+td.mat-cell {
+  padding: 16px;
+  font-size: 14px;
+  border-bottom: 1px solid #eee; /* Líneas divisorias suaves */
+}
+
+/* La columna de acciones (botones) */
+.mat-column-acciones {
+  width: 100px; /* Fija un ancho para que no se estire demasiado */
+  text-align: center;
+}
+
+/* Badges (Etiquetas de rol) */
+.badge {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Colores de los badges */
+.badge-primary { background-color: #e3f2fd; color: #1976d2; } /* ADMIN */
+.badge-success { background-color: #e8f5e9; color: #2e7d32; } /* CALIFICADOR */
+.badge-info    { background-color: #e0f7fa; color: #0097a7; } /* OPERADOR */
+
+/* Botón superior */
+.d-flex {
+  margin-bottom: 20px;
+}

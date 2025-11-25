@@ -1,0 +1,97 @@
+/* src/app/experto-wizard/experto-wizard.component.css */
+
+.wizard-container {
+  padding: 15px;
+}
+
+.step-container {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee; /* Separador entre pasos */
+}
+
+h4 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 0.95em;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+/* Estilo para los grupos de radio/checkbox */
+mat-radio-group,
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espacio entre opciones */
+}
+
+/* Contenedor para sub-pasos (Paso 3) */
+.substep-container {
+  margin-top: 15px;
+  margin-bottom: 20px;
+  padding-left: 15px;
+  border-left: 3px solid #eee; /* Línea visual para agrupar */
+}
+
+/* Título de un sub-paso (ej. "Detalles para b1") */
+h5 {
+  font-size: 1.1em;
+  color: #007bff; /* Color azul para destacar */
+  margin-bottom: 10px;
+}
+
+/* --- NUEVOS ESTILOS (Paso 4) --- */
+
+/* Contenedor para el Paso 4 (ítems específicos) */
+.step-4 {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed #ddd; /* Separador diferente */
+}
+
+/* Título opcional dentro del Paso 4 (si decides usarlo) */
+.step-4 h6 {
+  font-size: 1em;
+  color: #444;
+  margin-bottom: 8px;
+}
+/* ---------------------------------- */
+
+/* Estilo para texto de "No hay opciones" */
+.text-muted {
+  color: #888;
+  font-style: italic;
+  font-size: 0.9em;
+}
+/* ... (Estilos anteriores) ... */
+
+.preguntas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px; /* Espacio entre cada pregunta */
+}
+
+.pregunta-item {
+  border: 1px solid #eee;
+  padding: 15px;
+  border-radius: 6px;
+  background: #fdfdfd;
+}
+
+.pregunta-texto {
+  font-weight: bold;
+  font-size: 1.05em;
+  color: #333;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.opciones-calificador {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

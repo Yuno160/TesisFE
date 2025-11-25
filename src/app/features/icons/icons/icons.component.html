@@ -1,17 +1,99 @@
-<div class="charts">
-        <div class="pie"[chart]="pieChart">
+<div class="container mt-4">
+  <h2><i class="fas fa-chart-bar"></i> Módulo de Generación de Reportes</h2>
+  <p>Seleccione el tipo de reporte que desea generar.</p>
 
+  <div class="row">
+    
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Reporte por Paciente</h5>
+          <p class="card-text">
+            Genera un historial completo de calificaciones, diagnósticos y
+            códigos CIF para un paciente específico.
+          </p>
+          <div class="form-group">
+            <label for="pacienteSelect">Seleccionar Paciente:</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              placeholder="Buscar por Carnet o Nombre..."
+              [(ngModel)]="pacienteSeleccionadoId" 
+            />
+            </div>
+          <button 
+            (click)="generarReportePaciente()" 
+            class="btn btn-primary"
+            [disabled]="!pacienteSeleccionadoId"
+          >
+            Generar PDF
+          </button>
         </div>
+      </div>
+    </div>
 
-        <div class="line"[chart]="lineChart">
-
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">Reporte Total de Pacientes</h5>
+          <p class="card-text">
+            Genera una lista completa de todos los pacientes registrados en
+            el sistema.
+          </p>
+          <button (click)="generarReporteTotal()" class="btn btn-primary">
+            Generar PDF
+          </button>
         </div>
+      </div>
+    </div>
 
-</div> 
+    <div class="col-md-12 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Reportes de Calificaciones por Fecha</h5>
+          <p class="card-text">
+            Genera reportes de las calificaciones emitidas en un período.
+          </p>
+          
+          <div class="row align-items-end">
+            
+            <div class="col-md-3">
+              <label>Hoy (Diario)</label>
+              <button (click)="generarReporteDiario()" class="btn btn-secondary w-100">
+                Generar de Hoy
+              </button>
+            </div>
 
+            <div class="col-md-4">
+              <label for="mesSelect">Por Mes Específico</label>
+              <input type="month" class="form-control" [(ngModel)]="mesSeleccionado" />
+              <button 
+                (click)="generarReporteMensual()" 
+                class="btn btn-secondary w-100 mt-2"
+                [disabled]="!mesSeleccionado"
+              >
+                Generar de Mes
+              </button>
+            </div>
+            
+            <div class="col-md-5">
+              <label>Por Rango de Fechas</label>
+              <div class="input-group">
+                <input type="date" class="form-control" [(ngModel)]="fechaInicio" />
+                <input type="date" class="form-control" [(ngModel)]="fechaFin" />
+              </div>
+              <button 
+                (click)="generarReporteRango()" 
+                class="btn btn-secondary w-100 mt-2"
+                [disabled]="!fechaInicio || !fechaFin"
+              >
+                Generar Rango
+              </button>
+            </div>
 
-<!-- <highcharts-chart
-  [Highcharts]="Highcharts"
-  [options]="chartOptions"
-></highcharts-chart>
- -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div> </div>

@@ -65,3 +65,17 @@ h3 { color: #333; margin-bottom: 15px; }
   min-height: 100px;
   white-space: pre-wrap; /* Respeta los saltos de línea */
 }
+/* ver-calificacion.component.css */
+/* ... (Estilos existentes) ... */
+
+.fechas-info {
+  display: flex;
+  justify-content: space-between; /* Pone las fechas en extremos opuestos */
+  margin-bottom: 15px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.fecha-item strong {
+  color: #333;
+}

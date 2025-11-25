@@ -9,24 +9,28 @@
 
     <a class="navbar-brand" [routerLink]="['/']" matTooltip="Home">
       <h1>
-        SHOG.AI
+        Sistema Experto CIF
       </h1>
     </a>
 
     <span class="navbar-spacer"></span>
 
     <button mat-icon-button [matMenuTriggerFor]="notificationMenu">
-      <mat-icon matBadge="2" matBadgeColor="accent">notifications</mat-icon>
+      
+      <mat-icon 
+        [matBadge]="notificacionesCount" 
+        [matBadgeHidden]="notificacionesCount === 0" 
+        matBadgeColor="warn">
+        notifications
+      </mat-icon>
+    
     </button>
+
     <mat-menu #notificationMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
-
-      <a mat-menu-item>
-        <span>You have new tasks</span>
+      <a mat-menu-item routerLink="/dashboard">
+        <span *ngIf="notificacionesCount > 0">Tienes {{ notificacionesCount }} citas hoy</span>
+        <span *ngIf="notificacionesCount === 0">No tienes citas pendientes</span>
       </a>
-      <a mat-menu-item>
-        <span>You have a new message</span>
-      </a>
-
     </mat-menu>
 
 
@@ -39,15 +43,15 @@
     </button>
     <mat-menu #userMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
 
-      <a mat-menu-item [routerLink]="['/account/profile']">
+      <a mat-menu-item [routerLink]="['/users']">
         <mat-icon>person</mat-icon>
         <span>Account</span>
       </a>
 
-      <a mat-menu-item [routerLink]="['/auth/login']">
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Log out</span>
-      </a>
+    <button mat-menu-item (click)="onLogout()">
+  <mat-icon>exit_to_app</mat-icon>
+  <span>Log out</span>
+</button>
 
     </mat-menu>
 
@@ -81,7 +85,7 @@
           <p mat-line> Diagnose </p>
         </a> -->
 
-        <a mat-list-item [routerLink]="['/account/profile']">
+        <a mat-list-item [routerLink]="['/users']">
           <mat-icon mat-list-icon>person</mat-icon>
           <p mat-line> Account </p>
         </a>
@@ -107,11 +111,11 @@
 
         
 
-        <a  mat-list-item [routerLink]="['/auth/login']">
-          <mat-icon mat-list-icon>exit_to_app</mat-icon>
-          <p mat-line> Log out </p>
-        </a>
-        <a id="push-bottom" mat-list-item [routerLink]="['/about']" routerLinkActive="active">
+        <a mat-list-item (click)="onLogout()" style="cursor: pointer;">
+  <mat-icon mat-list-icon>exit_to_app</mat-icon>
+  <p mat-line> Log out </p>
+</a>
+        <a id="push-bottom" mat-list-item [routerLink]="['/auth/login']" routerLinkActive="active">
           <mat-icon mat-list-icon>
             info_outline
           </mat-icon>

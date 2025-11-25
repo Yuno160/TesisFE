@@ -1,74 +1,90 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
-import { AuthenticationService } from 'src/app/core/services/auth.service';
-import { NotificationService } from 'src/app/core/services/notification.service';
+
+// Servicio de Autenticación
+import { AuthenticationService } from '../../../core/services/auth.service';
+
+// Angular Material Modules
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule
+  ]
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
+  loginForm: FormGroup;
+  isLoading = false;
+  hidePassword = true; // Para alternar la visibilidad de la contraseña
 
-    loginForm!: UntypedFormGroup;
-    loading!: boolean;
-    nombre_usuario: string = '';
-    contrasena: string = '';
-    error: string = '';
-
-    constructor(private router: Router,
-        private titleService: Title,
-        private notificationService: NotificationService,
-        private authenticationService: AuthenticationService) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthenticationService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {
+    // Redirigir si ya está logueado
+    if (this.authService.currentUserValue) {
+      this.router.navigate(['/dashboard']); // O tu ruta principal
     }
 
-    ngOnInit() {
-        this.titleService.setTitle('angular-material-template - Login');
-        this.authenticationService.logout();
-        this.createForm();
-    }
+    this.loginForm = this.fb.group({
+      usuario: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
 
-    onSubmit(): void {
-        this.error = ''; // Reiniciar el mensaje de error
-        this.loading = true; // Iniciar el estado de carga
-    
-        this.login(this.nombre_usuario, this.contrasena);
-      }
+  onSubmit() {
+    if (this.loginForm.invalid) return;
 
-    private createForm() {
-        const savedUserEmail = localStorage.getItem('savedUserEmail');
+    this.isLoading = true;
+    const { usuario, password } = this.loginForm.value;
 
-        this.loginForm = new UntypedFormGroup({
-            email: new UntypedFormControl(savedUserEmail, [Validators.required, Validators.email]),
-            password: new UntypedFormControl('', Validators.required),
-            rememberMe: new UntypedFormControl(savedUserEmail !== null)
+    this.authService.login(usuario, password).subscribe({
+      next: (data) => {
+        this.isLoading = false;
+        // Mensaje de éxito
+        this.snackBar.open(`¡Bienvenido/a, ${data.usuario.nombre}!`, 'OK', { 
+          duration: 3000,
+          panelClass: ['success-snackbar'] 
         });
-    }
-    private login(nombre_usuario: string, contrasena: string): void {
-        this.authenticationService.login(nombre_usuario, contrasena).subscribe({
-          next: (response) => {
-            // Guardar el token en localStorage
-            localStorage.setItem('token', response.token);
-    
-            
-    
-            // Redirigir según el tipo de usuario
-            if (response.tipo_usuario === 'administrador') {
-              this.router.navigate(['/admin']);
-            } else {
-              this.router.navigate(['/dashboard']);
-            }
-          },
-          error: (err) => {
-            console.error(err);
-            this.error = err.error?.error || 'Credenciales incorrectas'; // Mensaje de error del backend
-            this.loading = false; // Terminar el estado de carga
-          },
-          complete: () => {
-            this.loading = false; // Finalizar el estado de carga al completar
-          }
+        
+        this.router.navigate(['/dashboard']); // Redirigir al Dashboard
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Login error:', error);
+        
+        let msg = 'Error de conexión con el servidor';
+        if (error.status === 401) msg = 'Usuario o contraseña incorrectos';
+        if (error.status === 404) msg = 'Usuario no encontrado o inactivo';
+
+        this.snackBar.open(msg, 'Cerrar', { 
+          duration: 4000, 
+          panelClass: ['error-snackbar'] 
         });
       }
+    });
+  }
 }

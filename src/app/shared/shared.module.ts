@@ -13,17 +13,18 @@ import { LayoutComponent } from './layout/layout.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
 import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Patient } from '../core/models/Patient';
 import { PatientService } from '../core/services/patient.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DatePipe } from '@angular/common';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule,NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+import { MatTabsModule } from '@angular/material/tabs'; // Para las pestañas
+import { MatRadioModule } from '@angular/material/radio'; // <-- ¡PARA LOS RADIO BUTTONS!
+import { MatCheckboxModule } from '@angular/material/checkbox'; // <-- ¡PARA LOS CHECKBOXES!
 //import { ChartModule } from 'angular-highcharts';
 
 @NgModule({
@@ -40,6 +41,7 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
       MatButtonModule,
       MatInputModule,
       MatRadioModule,
+      MatTabsModule,
         NgxMatDatetimePickerModule, NgxMatTimepickerModule,NgxMatNativeDateModule,
         //ChartModule
       MatDatepickerModule,

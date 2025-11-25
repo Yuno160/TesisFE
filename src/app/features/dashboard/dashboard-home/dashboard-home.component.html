@@ -1,85 +1,140 @@
-<head>
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
-  <link href="dashboard-home.component.css" rel="stylesheet">
+<div class="container-fluid mt-4">
   
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://www.solodev.com/assets/parallax/jquery.localscroll-1.2.7-min.js"></script>
-  <script src="https://www.solodev.com/assets/parallax/jquery.parallax-1.1.3.js"></script>
-  <script src="https://www.solodev.com/assets/parallax/jquery.scrollTo-1.4.2-min.js"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-<script type="text/javascript">
-  $(document).ready(function(){
-      $('#nav').localScroll(800);
-      //.parallax(xPosition, speedFactor, outerHeight) options:
-      //xPosition - Horizontal position of the element
-      //inertia - speed to move relative to vertical scroll. Example: 0.1 is one tenth the speed of scrolling, 2 is twice the speed of scrolling
-      //outerHeight (true/false) - Whether or not jQuery should use it's outerHeight option to determine when a section is in the viewport
-      $('#intro').parallax("70%", 0.1);
-      $('#second').parallax("50%", 0.1);
-      $('.bg').parallax("50%", 0.4);
-      $('#third').parallax("50%", 0.3);
-      $('#fourth').parallax("50%", 0.3);
-      $('#fifth').parallax("50%", 0.3);
-      $('#sixth').parallax("50%", 0.3);
-      $('#footer').parallax("50%", 0.3);
-  });
-  
-  
-  </script>
-  
-<div class="panel-header panel-header-sm">
-</div>
-<div class="main-content">
-  <head>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
-    <link href="dashboard-home.component.css" rel="stylesheet">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://www.solodev.com/assets/parallax/jquery.localscroll-1.2.7-min.js"></script>
-    <script src="https://www.solodev.com/assets/parallax/jquery.parallax-1.1.3.js"></script>
-    <script src="https://www.solodev.com/assets/parallax/jquery.scrollTo-1.4.2-min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  </head>
-  
-  
-  <script type="text/javascript">
-  $(document).ready(function(){
-      $('#nav').localScroll(800);
-      //.parallax(xPosition, speedFactor, outerHeight) options:
-      //xPosition - Horizontal position of the element
-      //inertia - speed to move relative to vertical scroll. Example: 0.1 is one tenth the speed of scrolling, 2 is twice the speed of scrolling
-      //outerHeight (true/false) - Whether or not jQuery should use it's outerHeight option to determine when a section is in the viewport
-      $('#intro').parallax("70%", 0.1);
-      $('#second').parallax("50%", 0.1);
-      $('.bg').parallax("50%", 0.4);
-      $('#third').parallax("50%", 0.3);
-      $('#fourth').parallax("50%", 0.3);
-      $('#fifth').parallax("50%", 0.3);
-      $('#sixth').parallax("50%", 0.3);
-      $('#footer').parallax("50%", 0.3);
-  });
-  
-  
-  </script>
-  
-  
-  
-  <section class="hero">
-    <div class="hero-container">
-      <h1>SHOG.AI</h1>
-      <p>SHOG.AI is an AI system that can create an international DNI for people with special abilities</p>
-     
+  <div class="row mb-4 welcome-section">
+    <div class="col-12">
+      <h2 class="mb-0">Hola, <span class="text-primary">{{ currentUser?.usuario?.nombre }}</span></h2>
+      <p class="text-muted">
+        Rol: <strong>{{ currentUser?.usuario?.rol }}</strong> | Bienvenido al Sistema Experto CIF.
+      </p>
+      <hr>
     </div>
-  </section>  
-  <!--#intro-->
-  <section class="heroo">
-    <div class="hero-container">
-      <h1>CIF CODES</h1>
-      <p>SHOG.AI uses CIF codes approved by ONU to make an accurate Diagnose</p>
-     
-    </div>
-  </section> 
+  </div>
 
-  
+  <div class="row">
+
+    <div class="col-md-4 col-lg-3 mb-4" *ngIf="esAdmin || esOperador">
+      <div class="card h-100 dashboard-card shadow-sm" routerLink="/typography">
+        <div class="card-body text-center">
+          <div class="icon-circle bg-blue">
+            <mat-icon>calendar_today</mat-icon>
+          </div>
+          <h4 class="card-title mt-3">Reservas</h4>
+          <p class="card-text small text-muted">Gestionar agenda y citas.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-lg-3 mb-4" *ngIf="esAdmin || esOperador">
+      <div class="card h-100 dashboard-card shadow-sm" routerLink="/customers">
+        <div class="card-body text-center">
+          <div class="icon-circle bg-green">
+            <mat-icon>people</mat-icon>
+          </div>
+          <h4 class="card-title mt-3">Pacientes</h4>
+          <p class="card-text small text-muted">Registrar y buscar pacientes.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-lg-3 mb-4" *ngIf="esCalificador">
+      <div class="card h-100 dashboard-card shadow-sm" routerLink="/calificacion">
+        <div class="card-body text-center">
+          <div class="icon-circle bg-red">
+            <mat-icon>medical_services</mat-icon>
+          </div>
+          <h4 class="card-title mt-3">Calificar</h4>
+          <p class="card-text small text-muted">Iniciar evaluación CIF.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-lg-3 mb-4" *ngIf="esAdmin || esCalificador">
+      <div class="card h-100 dashboard-card shadow-sm" routerLink="/reportes">
+        <div class="card-body text-center">
+          <div class="icon-circle bg-orange">
+            <mat-icon>assessment</mat-icon>
+          </div>
+          <h4 class="card-title mt-3">Reportes</h4>
+          <p class="card-text small text-muted">Generar PDFs y estadísticas.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-lg-3 mb-4" *ngIf="esAdmin">
+      <div class="card h-100 dashboard-card shadow-sm" routerLink="/users">
+        <div class="card-body text-center">
+          <div class="icon-circle bg-purple">
+            <mat-icon>manage_accounts</mat-icon>
+          </div>
+          <h4 class="card-title mt-3">Usuarios</h4>
+          <p class="card-text small text-muted">Gestionar equipos médicos.</p>
+        </div>
+      </div>
+    </div>
+  </div> 
+
+  <div class="row mt-4" *ngIf="esCalificador || esAdmin || esOperador">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        
+        <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+          <h4 class="mb-0 text-primary d-flex align-items-center">
+            <mat-icon class="mr-2">event_note</mat-icon> Agenda del Día (Hoy)
+          </h4>
+          <span class="badge badge-pill badge-primary p-2" style="font-size: 0.9rem;">
+            {{ reservasHoy.length }} Citas
+          </span>
+        </div>
+        
+        <div class="card-body p-0">
+          
+          <div *ngIf="reservasHoy.length === 0" class="p-5 text-center text-muted">
+            <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: #ccc;">event_available</mat-icon>
+            <p class="mt-2 mb-0">No hay calificaciones programadas para el día de hoy.</p>
+          </div>
+
+          <div class="table-responsive" *ngIf="reservasHoy.length > 0">
+            <table class="table table-hover mb-0 align-middle">
+              <thead class="bg-light">
+                <tr>
+                  <th class="border-0" style="width: 100px;">Hora</th>
+                  <th class="border-0">Paciente</th>
+                  <th class="border-0">Carnet</th>
+                  <th class="border-0">Motivo/Observación</th>
+                  <th class="border-0 text-center">Estado</th>
+                  <th class="border-0 text-end" style="min-width: 120px;">Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cita of reservasHoy">
+                  <td class="fw-bold text-primary">{{ cita.fecha_hora_inicio | date:'HH:mm' }}</td>
+                  
+                  <td>{{ cita.nombre }}</td>
+                  
+                  <td>{{ cita.carnet_identidad }}</td>
+                  
+                  <td class="text-muted small text-truncate" style="max-width: 200px;">
+                    {{ cita.observaciones || 'Sin observaciones' }}
+                  </td>
+                  
+                  <td class="text-center">
+                    <span class="badge badge-warning px-3 py-2">{{ cita.estado }}</span>
+                  </td>
+                  
+                  <td class="text-end">
+                    <button mat-stroked-button color="primary" 
+              (click)="iniciarCalificacion(cita)"> 
+        <mat-icon>play_arrow</mat-icon> Iniciar
+      </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

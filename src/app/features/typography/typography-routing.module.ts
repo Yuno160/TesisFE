@@ -4,12 +4,10 @@ import { LayoutComponent } from 'src/app/shared/layout/layout.component';
 import { TypographyComponent } from './typography/typography.component';
 
 const routes: Routes = [
+ 
   {
     path: '',
-    component: LayoutComponent,
-    children: [
-      { path: '', component: TypographyComponent },
-    ]
+    component: TypographyComponent // <-- Directo al componente, sin Layout
   }
 ];
 @NgModule({

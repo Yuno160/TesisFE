@@ -4,13 +4,11 @@ import { LayoutComponent } from 'src/app/shared/layout/layout.component';
 import { EditPatientComponent } from './edit-patient.component';
 
 const routes: Routes = [
+ 
   {
-    path: '',
-    component: LayoutComponent,
-    children: [
-      { path: '', component: EditPatientComponent },
-    ]
-  }
+        path: '',
+        component: EditPatientComponent // <-- Directo al componente, sin Layout
+      }
 ];
 
 @NgModule({

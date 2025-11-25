@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>{{ modo }} Usuario</h2>
+<mat-dialog-content [formGroup]="userForm">
+  
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Nombre Completo</mat-label>
+    <input matInput formControlName="nombre_completo">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Nombre de Usuario (Login)</mat-label>
+    <input matInput formControlName="usuario">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Contraseña</mat-label>
+    <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+      <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+    <mat-hint *ngIf="modo === 'Editar'">Dejar en blanco para no cambiar</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Rol</mat-label>
+    <mat-select formControlName="rol">
+      <mat-option value="ADMIN">Administrador (Jefe Nacional)</mat-option>
+      <mat-option value="CALIFICADOR">Equipo Calificador (Médico)</mat-option>
+      <mat-option value="OPERADOR">Operador (Secretaría)</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>Cargo</mat-label>
+    <input matInput formControlName="cargo" placeholder="Ej. Médico General">
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()" [disabled]="userForm.invalid">Guardar</button>
+</mat-dialog-actions>

@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms'; // Asegúrate de tener FormArray
 import { CifNode } from '../../core/models/Cif-code';
 // ... (Tus otros imports: ActivatedRoute, PacienteService, etc.)
@@ -9,6 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router'; // Para leer la URL y 
 import { PatientService } from '../../core/services/patient.service'; // Debes tener este servicio
 import { CalificacionService } from '../../core/services/calificacion.service'; // Y este
 import { Patient } from '../../core/models/Patient'; // Y este modelo
+import { ReservaService } from 'src/app/core/services/reserva.service';
+import { C } from '@fullcalendar/core/internal-common';
 
 @Component({
   selector: 'app-calificacion',
@@ -19,6 +21,7 @@ export class CalificacionComponent implements OnInit {
 
   calificacionForm: FormGroup;
   public searchTerm: string = '';
+  reservaId: string | null = null;
   
   // --- PASO NUEVO: Variable para guardar el paciente ---
   public paciente: Patient;
@@ -31,10 +34,19 @@ export class CalificacionComponent implements OnInit {
     private route: ActivatedRoute, // Para leer el ID de la URL
     private router: Router, // Para navegar al final
     private pacienteService: PatientService, // Para cargar datos del paciente
-    private calificacionService: CalificacionService // Para guardar la calificación
-  ) { }
+    private calificacionService: CalificacionService, // Para guardar la calificación
+    private cdr: ChangeDetectorRef,
+    private reservaService: ReservaService,
+  ) {
+
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state) {
+      this.reservaId = navigation.extras.state['reservaId'];
+    }
+   }
 
   ngOnInit(): void {
+     console.log("ReservaID", this.reservaId);
     this.calificacionForm = this.fb.group({
       pacienteId: [null, Validators.required], // Importante: el ID irá aquí
       observaciones: [''],
@@ -54,27 +66,7 @@ export class CalificacionComponent implements OnInit {
       return;
     }
 
-   /*  // --- PASO NUEVO: Cargar datos del paciente ---
-    // 1. Leemos el ID de la URL (ej: /calificar/123)
-
-    if (pacienteId) {
-      // 2. Pedimos los datos al servicio
-      this.pacienteService.getPacienteById(pacienteId).subscribe(data => {
-        this.paciente = data; // 3. Guardamos los datos para el HTML
-        
-        // 4. ¡CRÍTICO! Ponemos el ID en el formulario para que se envíe
-        this.calificacionForm.patchValue({
-          pacienteId: this.paciente.id_paciente 
-        });
-        
-        this.isLoading = false;
-      });
-    } else {
-      console.error('No se encontró ID de paciente');
-      this.isLoading = false;
-      // Aquí deberías redirigir o mostrar un error
-    }
-  } */
+  
  // Llamamos al servicio (el que usa /id/:id)
     this.pacienteService.getPacienteById(pacienteId).subscribe({
       next: (data) => {
@@ -148,9 +140,18 @@ export class CalificacionComponent implements OnInit {
     this.calificacionService.guardar(this.calificacionForm.value).subscribe({
       next: (respuesta) => {
         console.log('¡Guardado con éxito!', respuesta);
-        // Mostrar un mensaje de éxito (ej. un "Toast" o "Snackbar")
-        
-        // Redirigir de vuelta al dashboard
+        if (respuesta) {
+          console.log("ReservaID", this.reservaId);
+            this.reservaService.marcarComoCompletada(this.reservaId).subscribe(() => {
+                console.log('Reserva cerrada');
+                
+                // 3. Volver al Dashboard (o generar carnet)
+                this.router.navigate(['/dashboard']);
+            });
+        } else {
+            // Si no venía de una reserva (ej. entró directo), solo navega
+            this.router.navigate(['/dashboard']);
+        }
         this.router.navigate(['/dashboard']); 
       },
       error: (err) => {
@@ -159,5 +160,33 @@ export class CalificacionComponent implements OnInit {
         this.errorMessage = 'Error al guardar. ' + (err.error?.message || '');
       }
     });
+  }
+
+  onSugerenciasExperto(sugerencias: CifNode[]): void {
+ console.log('¡Sugerencias recibidas del asistente!', sugerencias);
+ console.log('CALIFICACION (PADRE): ¡RECIBIENDO sugerencias!', sugerencias);
+ console.log('Reservaa ID:', this.reservaId)
+
+    // 1. Obtenemos la referencia al FormArray (igual que en onTreeSelectionChange)
+    const cifCodesArray = this.calificacionForm.get('cifCodes') as FormArray;
+
+    // 2. Limpiamos la lista actual
+    cifCodesArray.clear();
+
+    // 3. Llenamos el FormArray con las NUEVAS sugerencias
+    sugerencias.forEach(node => {
+      cifCodesArray.push(this.fb.control({ 
+        codigo: node.codigo, 
+        // La descripción puede venir vacía desde el BE, 
+        // pero la incluimos por si acaso.
+        descripcion: node.descripcion || '' 
+      }));
+    });
+
+    this.cdr.detectChanges();
+  }
+
+  get cifCodesArray(): FormArray {
+    return this.calificacionForm.get('cifCodes') as FormArray;
   }
 }
