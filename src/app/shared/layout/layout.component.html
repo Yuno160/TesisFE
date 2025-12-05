@@ -1,142 +1,122 @@
 <div class="navbar-container" [class.example-is-mobile]="mobileQuery.matches">
 
-  <!-- Top navbar -->
+  <!-- BARRA SUPERIOR (Navbar) -->
   <mat-toolbar class="navbar">
-
+    
+    <!-- Botón Hamburguesa (Menú) -->
     <button mat-icon-button (click)="snav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
 
+    <!-- Título / Logo -->
     <a class="navbar-brand" [routerLink]="['/']" matTooltip="Home">
-      <h1>
-        Sistema Experto CIF
-      </h1>
+      <h1>SHOG.AI</h1>
     </a>
 
+    <!-- Espaciador flexible -->
     <span class="navbar-spacer"></span>
 
+    <!-- --- ¡AQUÍ ESTÁ LA CAMPANITA DE NUEVO! --- -->
     <button mat-icon-button [matMenuTriggerFor]="notificationMenu">
-      
       <mat-icon 
         [matBadge]="notificacionesCount" 
         [matBadgeHidden]="notificacionesCount === 0" 
         matBadgeColor="warn">
         notifications
       </mat-icon>
-    
     </button>
-
+    
+    <!-- Menú desplegable de la campana -->
     <mat-menu #notificationMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
       <a mat-menu-item routerLink="/dashboard">
-        <span *ngIf="notificacionesCount > 0">Tienes {{ notificacionesCount }} citas hoy</span>
+        <mat-icon>event</mat-icon>
+        <span *ngIf="notificacionesCount > 0">Tienes {{ notificacionesCount }} citas para hoy</span>
         <span *ngIf="notificacionesCount === 0">No tienes citas pendientes</span>
       </a>
     </mat-menu>
+    <!-- ------------------------------------------- -->
 
 
-
+    <!-- Botón de Usuario -->
     <button mat-button [matMenuTriggerFor]="userMenu">
       <mat-icon>person</mat-icon>
-      <span fxShow fxHide.xs>
-        {{userName}}
-      </span>
+      <span fxShow fxHide.xs>{{userName}}</span>
     </button>
+    
+    <!-- Menú de Usuario -->
     <mat-menu #userMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
-
-      <a mat-menu-item [routerLink]="['/users']">
+      <!-- (Opcional) Perfil -->
+      <!-- <button mat-menu-item routerLink="/account">
         <mat-icon>person</mat-icon>
-        <span>Account</span>
-      </a>
+        <span>Mi Perfil</span>
+      </button> -->
 
-    <button mat-menu-item (click)="onLogout()">
-  <mat-icon>exit_to_app</mat-icon>
-  <span>Log out</span>
-</button>
-
+      <button mat-menu-item (click)="onLogout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Cerrar Sesión</span>
+      </button>
     </mat-menu>
 
   </mat-toolbar>
 
+  <!-- BARRA LATERAL (Sidenav) -->
   <mat-sidenav-container class="navbar-sidenav-container">
-    <!-- Side nav -->
+    
     <mat-sidenav #snav [opened]="!mobileQuery.matches" [mode]="mobileQuery.matches ? 'over' : 'side'"
       [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" class="sidenav">
 
       <mat-nav-list>
         
-
+        <!-- 1. DASHBOARD (Todos) -->
         <a mat-list-item [routerLink]="['/dashboard']" routerLinkActive="active">
-          <mat-icon mat-list-icon>
-            dashboard
-          </mat-icon>
-          <p mat-line> Home </p>
+          <mat-icon mat-list-icon>dashboard</mat-icon>
+          <p mat-line> Inicio </p>
         </a>
 
-        <a mat-list-item [routerLink]="['/customers']" routerLinkActive="active">
-          <mat-icon mat-list-icon>
-            business
-          </mat-icon>
-          <p mat-line> Patients </p>
-        </a>
-        <!-- <a mat-list-item [routerLink]="['/users']" routerLinkActive="active">
-          <mat-icon mat-list-icon>
-            people
-          </mat-icon>
-          <p mat-line> Diagnose </p>
-        </a> -->
-
-        <a mat-list-item [routerLink]="['/users']">
-          <mat-icon mat-list-icon>person</mat-icon>
-          <p mat-line> Account </p>
+        <!-- 2. PACIENTES (Admin y Operador) -->
+        <a mat-list-item [routerLink]="['/customers']" routerLinkActive="active" *ngIf="esAdmin || esOperador || esCalificador ">
+          <mat-icon mat-list-icon>people</mat-icon>
+          <p mat-line> Pacientes </p>
         </a>
 
-        
-<!-- 
+        <!-- 3. RESERVAS (Admin y Operador) -->
+        <a mat-list-item [routerLink]="['/typography']" routerLinkActive="active" *ngIf="esAdmin || esOperador">
+          <mat-icon mat-list-icon>calendar_today</mat-icon>
+          <p mat-line> Reservas </p>
+        </a>
+
+
+        <!-- 5. REPORTES (Admin y Calificador) -->
+        <a mat-list-item [routerLink]="['/icons']" routerLinkActive="active" *ngIf="esAdmin || esCalificador">
+          <mat-icon mat-list-icon>assessment</mat-icon>
+          <p mat-line> Reportes </p>
+        </a>
+
+        <!-- 6. USUARIOS (Solo Admin) -->
+        <a mat-list-item [routerLink]="['/users']" routerLinkActive="active" *ngIf="esAdmin">
+          <mat-icon mat-list-icon>manage_accounts</mat-icon>
+          <p mat-line> Usuarios </p>
+        </a>
+
         <mat-divider></mat-divider>
 
-        <h3 mat-subheader>Resources</h3> -->
-
-        <a mat-list-item [routerLink]="['/icons']" routerLinkActive="active">
-          <mat-icon mat-list-icon>
-            toll
-          </mat-icon>
-          <p mat-line> Reports </p>
-        </a>
-        <a mat-list-item [routerLink]="['/typography']" routerLinkActive="active">
-          <mat-icon mat-list-icon>
-            font_download
-          </mat-icon>
-          <p mat-line> Bookings </p>
-        </a>
-
-        
-
+        <!-- LOGOUT (Todos) -->
         <a mat-list-item (click)="onLogout()" style="cursor: pointer;">
-  <mat-icon mat-list-icon>exit_to_app</mat-icon>
-  <p mat-line> Log out </p>
-</a>
-        <a id="push-bottom" mat-list-item [routerLink]="['/auth/login']" routerLinkActive="active">
-          <mat-icon mat-list-icon>
-            info_outline
-          </mat-icon>
-          <p mat-line> About </p>
-
-          
+          <mat-icon mat-list-icon>exit_to_app</mat-icon>
+          <p mat-line> Cerrar Sesión </p>
         </a>
+
       </mat-nav-list>
 
     </mat-sidenav>
 
-    <!-- Main content -->
+    <!-- CONTENIDO PRINCIPAL -->
     <mat-sidenav-content class="sidenav-content">
-
       <div class="progress-bar-container">
         <mat-progress-bar color="accent" mode="indeterminate" *ngIf="spinnerService.visibility | async">
         </mat-progress-bar>
-        <!-- <mat-spinner class="spinner" [diameter]="50" *ngIf="showSpinner"></mat-spinner> -->
       </div>
-
-
+      
       <router-outlet></router-outlet>
 
     </mat-sidenav-content>

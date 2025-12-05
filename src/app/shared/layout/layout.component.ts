@@ -21,6 +21,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     userName: string = "";
     isAdmin: boolean = false;
     notificacionesCount: number = 0;
+    currentUser: any;
 
     private autoLogoutSubscription: Subscription = new Subscription;
 
@@ -38,6 +39,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
+        this.currentUser = this.authService.getCurrentUser();
         const user = this.authService.getCurrentUser();
 
         this.isAdmin = user.isAdmin;
@@ -77,4 +79,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewInit {
             (error) => console.error('Error cargando notificaciones', error)
         );
     }
+
+    get esAdmin() { return this.currentUser?.usuario?.rol === 'ADMIN'; }
+    get esOperador() { return this.currentUser?.usuario?.rol === 'OPERADOR'; }
+    get esCalificador() { return this.currentUser?.usuario?.rol === 'CALIFICADOR'; }
 }
