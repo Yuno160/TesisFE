@@ -33,7 +33,7 @@
     "@fullcalendar/timegrid": "^6.1.19",
     "angular-calendar": "^0.32.0",
     "angular-highcharts": "^17.0.1",
-    "chart.js": "^4.4.7",
+    "chart.js": "^4.5.1",
     "date-fns": "^4.1.0",
     "file-saver": "^2.0.5",
     "highcharts": "^12.1.2",
@@ -42,6 +42,7 @@
     "moment": "^2.29.4",
     "ngx-logger": "^5.0.7",
     "rxjs": "~7.5.0",
+    "sweetalert2": "^11.26.10",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

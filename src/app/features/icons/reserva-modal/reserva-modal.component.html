@@ -1,9 +1,5 @@
 <h2 mat-dialog-title>{{ tituloModal }}</h2>
 
-<p class="text-muted">
-  Fecha y Hora: <strong>{{ fechaHoraClickeada | date:'full' }}</strong>
-</p>
-
 <mat-dialog-content>
   <div *ngIf="isLoading" class="spinner-overlay">
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
@@ -27,18 +23,45 @@
     <strong>Paciente Seleccionado:</strong>
     <p class="mb-0">{{ pacienteEncontrado.nombre }}</p>
   </div>
+  
   <div *ngIf="pacienteNoEncontrado" class="alert alert-warning">
     Paciente no encontrado.
     <button mat-button color="primary" (click)="irACrearPaciente()">(+ Crear Paciente Nuevo)</button>
   </div>
 
-
   <div class="mt-4" [formGroup]="reservaForm"> 
-    <h5>2. Observaciones de la Reserva</h5>
-    <mat-form-field appearance="fill" class="w-100">
+    <h5>2. Datos de la Cita</h5>
+
+    <div class="mb-3">
+        <label class="form-label text-muted small fw-bold">FECHA Y HORA *</label>
+        <input 
+            type="datetime-local" 
+            class="form-control" 
+            formControlName="fechaHora"
+            style="font-size: 1.1em; padding: 10px;">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label text-muted small fw-bold">EQUIPO MÉDICO (CREW)</label>
+        
+        <select class="form-select" formControlName="id_crew_manual" style="font-size: 1.1em; padding: 10px;">
+            <option [ngValue]="null">✨ Asignación Automática (Recomendado)</option>
+            
+            <option *ngFor="let crew of listaCrews" [ngValue]="crew.id_crew">
+               {{ crew.nombre }} 
+            </option>
+        </select>
+        
+        <div class="form-text text-info mt-1" *ngIf="!reservaForm.get('id_crew_manual')?.value">
+           <i class="fas fa-robot"></i> El sistema buscará el equipo libre automáticamente al guardar.
+        </div>
+    </div>
+
+    <mat-form-field appearance="fill" class="w-100 mt-2">
       <mat-label>Observaciones (Opcional)</mat-label>
-      <textarea matInput formControlName="observaciones"></textarea>
+      <textarea matInput formControlName="observaciones" placeholder="Ej: Traer radiografías previas..."></textarea>
     </mat-form-field>
+
   </div>
 </mat-dialog-content>
 
@@ -46,14 +69,16 @@
   
   <button *ngIf="modo === 'Editar'" mat-button color="warn" class="me-auto" (click)="onEliminarReserva()" [disabled]="isLoading">
     <mat-icon>delete</mat-icon> 
-    Eliminar
+    Cancelar Cita
   </button>
   
-  <button mat-button (click)="onCancelar()">Cancelar</button>
+  <button mat-button (click)="onCancelar()">Cerrar</button>
+  
   <button 
     mat-raised-button 
     color="primary" 
     (click)="onGuardarReserva()"
-    [disabled]="reservaForm.invalid || isLoading"> {{ (modo === 'Crear') ? 'Guardar Reserva' : 'Actualizar Reserva' }}
+    [disabled]="reservaForm.invalid || isLoading"> 
+    {{ (modo === 'Crear') ? 'Agendar Cita' : 'Guardar Cambios' }}
   </button>
 </mat-dialog-actions>

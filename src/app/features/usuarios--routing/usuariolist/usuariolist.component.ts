@@ -11,7 +11,10 @@ import { UsuarioformComponent } from '../usuarioform/usuarioform.component';
   styleUrls: ['./usuariolist.component.css']
 })
 export class UsuariolistComponent implements OnInit {
-displayedColumns: string[] = ['id', 'nombre', 'usuario', 'rol', 'cargo', 'estado', 'acciones'];
+  
+  // AÑADIDO 'equipo' al array de columnas
+  displayedColumns: string[] = ['id', 'nombre', 'usuario', 'rol', 'equipo', 'cargo', 'estado', 'acciones'];
+  
   dataSource = new MatTableDataSource<any>();
 
   constructor(

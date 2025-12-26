@@ -2,8 +2,8 @@
 
 .calificacion-container {
   padding: 20px;
-  max-width: 1200px; /* Ancho máximo para el contenedor */
-  margin: 20px auto; /* Centrar en la página */
+  max-width: 1200px;
+  margin: 20px auto;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -29,7 +29,7 @@ textarea {
   border-radius: 4px;
   margin-bottom: 20px;
   font-family: sans-serif;
-  box-sizing: border-box; /* Incluye padding en el ancho */
+  box-sizing: border-box;
 }
 
 hr {
@@ -43,29 +43,40 @@ h3 {
   margin-bottom: 15px;
 }
 
-/* --- DISEÑO DE DOS COLUMNAS --- */
+/* --- DISEÑO DE DOS COLUMNAS (MODIFICADO PARA STICKY) --- */
 .cif-selection-layout {
-  display: flex; /* Activa Flexbox para las columnas */
-  gap: 25px;     /* Espacio entre las columnas */
+  display: flex;
+  gap: 25px;
+  /* IMPORTANTE: Esto evita que la columna derecha se estire hasta abajo,
+     permitiendo que el efecto sticky funcione */
+  align-items: flex-start; 
+  position: relative; /* Buena práctica para contextos sticky */
 }
 
 .cif-tree-panel {
-  flex: 2; /* Columna izquierda ocupa 2/3 del espacio */
+  flex: 2;
   background-color: #f9f9f9;
   border: 1px solid #eee;
   border-radius: 6px;
   padding: 15px;
-  min-height: 400px; /* Para que no se vea "chico" si el árbol es pequeño */
+  min-height: 400px;
   display: flex;
-  flex-direction: column; /* Para que buscador y árbol se apilen */
+  flex-direction: column;
 }
 
 .cif-selected-panel {
-  flex: 1; /* Columna derecha ocupa 1/3 del espacio */
+  flex: 1;
   background-color: #f9f9f9;
   border: 1px solid #eee;
   border-radius: 6px;
   padding: 15px;
+
+  /* --- AQUÍ ESTÁ EL TRUCO MAGICO --- */
+  position: sticky;  /* Se vuelve pegajoso */
+  top: 20px;         /* Se pega a 20px del techo de la ventana */
+  max-height: 85vh;  /* Si tienes muchos códigos, crea scroll interno */
+  overflow-y: auto;  /* Permite scroll dentro del cuadrito si es necesario */
+  z-index: 10;       /* Asegura que flote por encima de otros elementos si hay traslape */
 }
 
 /* Estilos del buscador */
@@ -76,7 +87,7 @@ h3 {
 
 .search-box input {
   width: 100%;
-  padding: 8px 10px 8px 35px; /* Padding a la izquierda para el ícono */
+  padding: 8px 10px 8px 35px;
   border: 1px solid #ccc;
   border-radius: 20px;
   font-size: 0.95em;
@@ -92,10 +103,9 @@ h3 {
 }
 
 .tree-wrapper {
-  flex-grow: 1; /* Para que el árbol ocupe el espacio restante */
-  overflow-y: auto; /* Scroll si el árbol es muy largo */
+  flex-grow: 1;
+  overflow-y: auto;
 }
-
 
 /* Estilos de las píldoras de selección */
 .selected-codes-list {
@@ -105,8 +115,8 @@ h3 {
 .selected-tag {
   display: flex;
   align-items: center;
-  background-color: #e6f7ff; /* Azul claro */
-  border: 1px solid #91d5ff; /* Borde azul */
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
   border-radius: 20px;
   padding: 5px 10px;
   margin-bottom: 8px;
@@ -116,11 +126,11 @@ h3 {
 }
 
 .selected-tag i.fa-check-circle {
-  color: #52c41a; /* Verde para el check */
+  color: #52c41a;
 }
 
 .selected-tag strong {
-  color: #1890ff; /* Azul para el código */
+  color: #1890ff;
 }
 
 .remove-tag-btn {
@@ -129,7 +139,7 @@ h3 {
   color: #8c8c8c;
   cursor: pointer;
   font-size: 0.9em;
-  margin-left: auto; /* Empuja la X a la derecha */
+  margin-left: auto;
   padding: 0 5px;
 }
 
@@ -138,9 +148,9 @@ h3 {
 }
 
 .text-muted {
-    color: #888;
-    font-style: italic;
-    font-size: 0.9em;
+  color: #888;
+  font-style: italic;
+  font-size: 0.9em;
 }
 
 /* Estilo del botón de guardar */
@@ -154,10 +164,52 @@ h3 {
   border-radius: 4px;
   font-size: 1.1em;
   cursor: pointer;
-  margin: 30px auto 0 auto; /* Centrar el botón */
+  margin: 30px auto 0 auto;
   transition: background-color 0.2s ease-in-out;
 }
 
 .btn-guardar:hover {
   background-color: #40a9ff;
 }
+
+/* EL FONDO OSCURO (OVERLAY) */
+.modal-overlay {
+  position: fixed; /* ESTO ES LA CLAVE: Se fija a la pantalla, no al contenido */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo negro semitransparente */
+  backdrop-filter: blur(4px); /* Efecto borroso pro (opcional) */
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  z-index: 9999; /* Se asegura de estar encima de TODO (menús, navbars) */
+}
+
+/* LA CAJA DEL MODAL */
+.modal-auditoria {
+  background: white;
+  width: 90%;
+  max-width: 800px; /* Ancho máximo para que no se vea gigante */
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5); /* Sombra fuerte para dar efecto 3D */
+  overflow: hidden;
+  animation: slideDown 0.3s ease-out; /* Animación de entrada */
+}
+
+/* ANIMACIÓN DE ENTRADA SUAVE */
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* IMPORTANTE: Estilos para el body cuando el modal está abierto (opcional) */
+/* Esto evita que se pueda scrollear la página de atrás, pero requiere lógica TS extra.
+   Por ahora con lo de arriba basta para que se vea bien visualmente. */

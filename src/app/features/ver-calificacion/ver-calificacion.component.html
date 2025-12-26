@@ -1,17 +1,32 @@
 <div class="calificacion-container">
 
-  <ng-container *ngIf="paciente; else loadingOrError">
-    <div class="patient-header">
-      <div class="patient-avatar">
-        <span>{{ paciente.nombre | slice:0:1 }}</span> 
+<ng-container *ngIf="paciente; else loadingOrError">
+  <div class="patient-header">
+    
+    <div class="avatar-wrapper">
+      
+      <img *ngIf="paciente.foto_url" 
+           [src]="getFotoUrl(paciente.foto_url)" 
+           class="profile-photo" 
+           alt="Foto Paciente">
+      
+      <div *ngIf="!paciente.foto_url" class="patient-avatar-placeholder">
+        <span>{{ paciente.nombre | slice:0:1 }}</span>
       </div>
-      <div class="patient-details">
-        <h1 class="patient-name">{{ paciente.nombre }} </h1>
-        <span class="patient-meta">{{ paciente.edad }} años</span>
-        <span class="patient-meta">C.I. {{ paciente.carnet_identidad }}</span>
-      </div>
+
+      <label class="camera-btn" title="Cambiar foto">
+        📷
+        <input type="file" (change)="onFotoSelected($event)" accept="image/*" hidden>
+      </label>
+
     </div>
-  </ng-container>
+    <div class="patient-details">
+      <h1 class="patient-name">{{ paciente.nombre }} </h1>
+      <span class="patient-meta">{{ paciente.edad }} años</span>
+      <span class="patient-meta">C.I. {{ paciente.carnet_identidad }}</span>
+    </div>
+  </div>
+</ng-container>
 
   <ng-template #loadingOrError>
     <div *ngIf="isLoading" class="loading-message">
@@ -57,11 +72,76 @@
       </p>
     </div>
 
-    <hr>
+    <div class="actions-area">
+      <a [href]="getImprimirUrl()" target="_blank" class="btn-guardar">
+        🖨️ Imprimir Carnet
+      </a>
+    </div>
 
-    <a [href]="getImprimirUrl()" target="_blank" class="btn-guardar">
-      Imprimir Carnet
-    </a>
+  </div>
+
+  <div *ngIf="paciente" class="docs-section">
+    <hr> <h3>📂 Documentos de Respaldo e Historial</h3>
+    <p class="text-muted">Adjunte radiografías, informes externos o escaneos del carnet.</p>
+
+    <div class="docs-upload-row">
+      <div class="docs-input-group">
+        <label>Tipo de Documento:</label>
+        <select [(ngModel)]="tipoDocumento" class="docs-control">
+          <option value="Informe Médico">Informe Médico</option>
+          <option value="Carnet Discapacidad">Carnet Discapacidad</option>
+          <option value="Radiografía/Estudio">Radiografía/Estudio</option>
+          <option value="Laboratorio">Laboratorio</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </div>
+
+      <div class="docs-input-group">
+        <label>Seleccionar archivo:</label>
+        <input type="file" (change)="onFileSelected($event)" accept=".pdf,.jpg,.jpeg,.png" class="docs-file-input">
+        <span *ngIf="!archivoSeleccionado" class="file-hint">Ningún archivo seleccionado</span>
+      </div>
+    </div>
+    
+    <div class="docs-actions">
+        <button (click)="subirArchivo()" 
+                [disabled]="!archivoSeleccionado || isUploading" 
+                class="btn-doc-upload">
+          <span *ngIf="!isUploading">⬆️ Subir Documento</span>
+          <span *ngIf="isUploading">⏳ Subiendo...</span>
+        </button>
+    </div>
+
+    <div class="docs-list-wrapper">
+      <table class="docs-table" *ngIf="listaDocumentos.length > 0; else noDocs">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Archivo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doc of listaDocumentos">
+            <td>{{ doc.fecha_subida | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ doc.tipo_documento }}</td>
+            <td class="col-filename" title="{{ doc.nombre_archivo }}">
+              {{ doc.nombre_archivo }}
+            </td>
+            <td>
+              <button (click)="verDocumento(doc.ruta_archivo)" class="btn-doc-view">
+                👁️ Ver
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ng-template #noDocs>
+        <p class="docs-empty">No hay documentos adjuntos para este paciente.</p>
+      </ng-template>
+    </div>
 
   </div>
 

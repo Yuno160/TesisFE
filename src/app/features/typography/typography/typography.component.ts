@@ -50,13 +50,74 @@ export class TypographyComponent implements OnInit {
     this.cargarReservas();
   }
 
-  cargarReservas() {
+cargarReservas() {
     this.reservasService.getAll().subscribe(
-      (eventos) => {
-        this.calendarOptions.events = eventos;
+      (data: any[]) => {
+        // 1. LOG DE CONTROL: Para ver en la consola qué llega realmente
+        console.log("🔥 DATOS FRESCOS DEL BACKEND:", data);
+
+        // Si no hay datos, no hacemos nada
+        if (!data || data.length === 0) {
+            console.warn("⚠️ No llegaron reservas o la lista está vacía.");
+            return;
+        }
+
+        // 2. MAPEO DE DATOS (Traducción BD -> Calendario)
+        const eventosFormateados = data.map(reserva => {
+            
+            // A) REPARACIÓN DE FECHAS
+            // MySQL a veces manda "2025-10-20 10:00:00" y JS necesita "2025-10-20T10:00:00"
+            let fechaInicio = reserva.fecha_hora_inicio;
+            let fechaFin = reserva.fecha_hora_fin;
+
+            if (typeof fechaInicio === 'string' && fechaInicio.includes(' ')) {
+                fechaInicio = fechaInicio.replace(' ', 'T');
+            }
+            if (typeof fechaFin === 'string' && fechaFin.includes(' ')) {
+                fechaFin = fechaFin.replace(' ', 'T');
+            }
+
+            // B) SELECCIÓN DE COLOR
+            // Si viene 'color_crew' lo usamos, si no, ponemos Gris (#808080)
+            const colorFinal = reserva.color_crew || '#808080';
+
+            // C) CONSTRUCCIÓN DEL TÍTULO
+            // Ejemplo: "Sandra (Equipo 1)"
+            const tituloEvento = `${reserva.nombre} (${reserva.nombre_crew || 'Sin Asignar'})`;
+
+            // D) RETORNO DEL OBJETO PARA FULLCALENDAR
+            return {
+                id: reserva.id.toString(), // El ID debe ser string
+                title: tituloEvento,       // Lo que se lee en la cajita
+                start: fechaInicio,        // Cuándo empieza
+                end: fechaFin,             // Cuándo termina
+                
+                // Estilos
+                backgroundColor: colorFinal,
+                borderColor: colorFinal,
+                textColor: '#ffffff',      // Letra blanca
+                
+                // Datos extra (útiles para cuando haces click en la reserva)
+                extendedProps: {
+                    observaciones: reserva.observaciones,
+                    telefono: reserva.telefono,
+                    crewId: reserva.id_crew,
+                    paciente: reserva.nombre
+                }
+            };
+        });
+
+        // 3. ACTUALIZACIÓN DEL CALENDARIO
+        // Creamos una copia del objeto de opciones para forzar a Angular a pintar de nuevo
+        this.calendarOptions = {
+            ...this.calendarOptions,
+            events: eventosFormateados
+        };
+        
+        console.log(`✅ Se cargaron ${eventosFormateados.length} reservas al calendario.`);
       },
       (error) => {
-        console.error('Error al cargar las reservas:', error);
+        console.error('❌ Error crítico al cargar reservas:', error);
       }
     );
   }

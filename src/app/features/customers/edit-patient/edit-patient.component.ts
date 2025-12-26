@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+/* import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Patient } from 'src/app/core/models/Patient';
@@ -117,4 +117,4 @@ loadPatient(carnet: string): void {
     this.errorMessage = '';
     this.successMessage = '';
   }
-}
+} */

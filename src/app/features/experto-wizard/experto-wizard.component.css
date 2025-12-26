@@ -11,8 +11,9 @@
 }
 
 h4 {
-  color: #333;
+  color: #1976d2; /* Un azul un poco más vivo para títulos */
   margin-bottom: 10px;
+  font-weight: 500;
 }
 
 p {
@@ -37,61 +38,85 @@ mat-radio-group,
   border-left: 3px solid #eee; /* Línea visual para agrupar */
 }
 
-/* Título de un sub-paso (ej. "Detalles para b1") */
+/* Título de un sub-paso */
 h5 {
   font-size: 1.1em;
-  color: #007bff; /* Color azul para destacar */
+  color: #007bff;
   margin-bottom: 10px;
 }
 
-/* --- NUEVOS ESTILOS (Paso 4) --- */
-
-/* Contenedor para el Paso 4 (ítems específicos) */
-.step-4 {
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 1px dashed #ddd; /* Separador diferente */
-}
-
-/* Título opcional dentro del Paso 4 (si decides usarlo) */
-.step-4 h6 {
-  font-size: 1em;
-  color: #444;
-  margin-bottom: 8px;
-}
-/* ---------------------------------- */
-
-/* Estilo para texto de "No hay opciones" */
-.text-muted {
-  color: #888;
-  font-style: italic;
-  font-size: 0.9em;
-}
-/* ... (Estilos anteriores) ... */
+/* --- ESTILOS DE LA LISTA DE PREGUNTAS (MEJORADO) --- */
 
 .preguntas-list {
   display: flex;
   flex-direction: column;
-  gap: 25px; /* Espacio entre cada pregunta */
+  gap: 20px; /* Espacio cómodo entre tarjeta y tarjeta */
+  margin-bottom: 20px;
 }
 
+/* --- TARJETA DE PREGUNTA (ESTILO CARD) --- */
 .pregunta-item {
-  border: 1px solid #eee;
-  padding: 15px;
-  border-radius: 6px;
-  background: #fdfdfd;
+  background: #fff;           /* Fondo blanco puro para resaltar */
+  border: 1px solid #e0e0e0;  /* Borde sutil */
+  border-radius: 8px;         /* Bordes redondeados modernos */
+  padding: 20px;              /* Espacio interno amplio */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.03); /* Sombra suave */
+  transition: all 0.2s ease-in-out;       /* Animación suave */
+}
+
+/* Efecto al pasar el mouse por encima de una pregunta */
+.pregunta-item:hover {
+  border-color: #2196f3;      /* Se pone azulito */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* La sombra crece */
+  transform: translateY(-2px); /* Se levanta un poquito */
 }
 
 .pregunta-texto {
-  font-weight: bold;
-  font-size: 1.05em;
+  font-weight: 600;
+  font-size: 1.1em;
   color: #333;
   display: block;
   margin-bottom: 15px;
+  line-height: 1.4; /* Mejora la lectura en preguntas largas */
 }
 
 .opciones-calificador {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  margin-left: 5px;
+}
+
+/* Ajuste para que el texto de las opciones no se corte */
+::ng-deep .mat-radio-label-content {
+  white-space: normal;
+}
+
+/* --- BOTÓN DE SUGERIR CÓDIGOS --- */
+button[mat-raised-button] {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1em;
+  margin-top: 10px;
+  background-color: #1976d2; /* Color principal */
+  color: white;
+}
+
+/* --- TEXTOS AUXILIARES --- */
+.text-muted {
+  color: #888;
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+.step-4 {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed #ddd;
+}
+
+.step-4 h6 {
+  font-size: 1em;
+  color: #444;
+  margin-bottom: 8px;
 }

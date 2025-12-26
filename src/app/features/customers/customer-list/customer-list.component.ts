@@ -7,6 +7,8 @@ import { PatientService } from '../../../core/services/patient.service';
 import { GlobalService } from '../../../core/services/global.service';
 import { Patient } from '../../../core/models/Patient';
 import { Router } from '@angular/router'
+import Swal from 'sweetalert2';
+import { ReportesService } from 'src/app/core/services/reportes.service';
 
 
 @Component({
@@ -19,14 +21,15 @@ export class CustomerListComponent implements OnInit {
   @ViewChild(MatSort, { static: true })
   sort: MatSort = new MatSort;
   displayedColumns: string[] = ['nombre', 'carnet', 'telefono', 'direccion', 'edad', 'cif'];
-
+  generandoReporte: boolean = false;
   constructor(
     private logger: NGXLogger,
     private notificationService: NotificationService,
     private titleService: Title,
     private _PatientService: PatientService,
     private csvService : GlobalService,
-    private router: Router
+    private router: Router,
+    private reporteService: ReportesService
   ) { }
 
   listPatients : Patient[]=[];
@@ -106,5 +109,45 @@ calificarPaciente(idPaciente: number): void {
     console.log("nombre:"+nombre);
     localStorage.setItem('nombre', nombre); 
 
+  }
+
+  imprimirReporte(paciente: any) {
+    this.generandoReporte = true;
+    
+    // 1. Feedback visual inmediato
+    const toast = Swal.mixin({
+      toast: true, position: 'top-end', showConfirmButton: false, timer: 3000
+    });
+    toast.fire({ icon: 'info', title: 'Generando documento oficial...' });
+
+    // 2. Llamada al servicio
+    // Usamos el ID o el Carnet según cómo configuraste tu backend (recomiendo ID para evitar problemas con espacios)
+    const idBusqueda = paciente.id || paciente.carnet_identidad; 
+
+    this.reporteService.descargarReporteCIF(idBusqueda).subscribe({
+      next: (blob: Blob) => {
+        // 3. Éxito: Crear URL virtual para el PDF
+        const url = window.URL.createObjectURL(blob);
+        
+        // Abrir en nueva pestaña
+        window.open(url, '_blank');
+        
+        this.generandoReporte = false;
+        
+        // Liberar memoria después de un rato (buena práctica)
+        setTimeout(() => window.URL.revokeObjectURL(url), 10000);
+      },
+      error: (err) => {
+        this.generandoReporte = false;
+        console.error("Error PDF:", err);
+        
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudo generar el reporte',
+          text: 'Posiblemente faltan datos de evaluación médica o el servicio no responde.',
+          footer: 'Intenta nuevamente más tarde.'
+        });
+      }
+    });
   }
 }

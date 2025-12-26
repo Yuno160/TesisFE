@@ -10,5 +10,8 @@ export interface Patient {
   code?: string; // Opcional
   fecha_registro?: string; // <-- Añadido (parece que también lo devuelve tu backend)
   ya_calificado?: 0 | 1; // <-- Añadido (o puedes usar 'boolean' si transformas el 0/1)
+
+  // --- ¡AGREGA ESTA LÍNEA! ---
+    foto_url?: string;
 }
   

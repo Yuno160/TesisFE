@@ -32,6 +32,17 @@ export class CalificacionService {
 
   constructor(private http: HttpClient) {}
 
+  // Nuevo método para llamar al Auditor IA
+  analizarDocumentoConIA(archivo: File): Observable<any> {
+    const formData = new FormData();
+    // 'documento' debe coincidir con lo que pusimos en upload.single('documento') en el backend
+    formData.append('documento', archivo);
+
+    // Ajusta la URL si tu backend no está en /api
+    // Si usas environment.apiUrl, úsalo aquí también.
+    return this.http.post(`http://localhost:3000/api/auditoria/analizar`, formData);
+  }
+
   guardar(payload: FormPayload): Observable<any> {
 
     // --- ¡AQUÍ ESTÁ LA TRANSFORMACIÓN! ---
@@ -77,5 +88,24 @@ export class CalificacionService {
     );
   }
   // -----------------------------
+analizarMultiplesDocumentos(archivos: File[]): Observable<any> {
+    const formData = new FormData();
 
+    // 1. Adjuntar cada archivo al FormData
+    // Nota: Usamos el mismo nombre de campo 'archivos' para todos.
+    // Esto crea un array de archivos que Multer entenderá en el backend.
+    if (archivos && archivos.length > 0) {
+      archivos.forEach((archivo) => {
+        formData.append('archivos', archivo); 
+      });
+    }
+
+    // 2. Adjuntar metadatos opcionales (si tu backend los necesita)
+    // Por ejemplo, para decirle a la IA que cruce información
+    formData.append('contexto', 'expediente_completo');
+
+    // 3. Enviar al Backend
+    // Asegúrate de que esta URL sea la correcta en tu API
+    return this.http.post(`http://localhost:3000/api/auditoria/analizar-expediente`, formData);
+  }
 }

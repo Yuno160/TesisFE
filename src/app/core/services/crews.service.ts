@@ -7,12 +7,13 @@ import { Observable } from 'rxjs';
 })
 export class CrewsService {
 
-  url = 'http://localhost:3000/crews';
+  apiUrl = 'http://localhost:3000/api/crews';
    constructor(private http: HttpClient) {}
  
-   getCrews(): Observable<any>{
-     return this.http.get(this.url);
-   }
+   
+   getAllActive(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`);
+  }
 
    
 }

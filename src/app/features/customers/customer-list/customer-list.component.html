@@ -1,22 +1,27 @@
-
-
-<div >
+<div>
   <div class="row">
       <div class="col-lg-8 offset-lg-2">
           <div class="card">
               <div class="card-body text-center">
-                <h2>PATIENTS</h2>
-                <button mat-raised-button (click)="downloadCsv()"><img src="../../../../assets/images/images/export.png"></button>
-                  <button mat-raised-button routerLink="/addpatient"><img src="../../../../assets/images/images/add.png"></button>
-                  <table *ngIf="listPatients.length > 0" class="table table-striped mt-3">
+                
+                <h2>PACIENTES</h2>
+                
+                <button mat-raised-button (click)="downloadCsv()">
+                    <img src="../../../../assets/images/images/export.png">
+                </button>
+                <button mat-raised-button routerLink="/addpatient">
+                    <img src="../../../../assets/images/images/add.png">
+                </button>
+
+                <table *ngIf="listPatients.length > 0" class="table table-striped mt-3">
                       <thead>
                         <tr>
-                          <th scope="col">Name</th>
-                          <th scope="col">DNI</th>
-                          <th scope="col">Phone</th>
-                          <th scope="col">Address</th>
-                          <th scope="col">Age</th>
-                          <th scope="col">Actions</th>
+                          <th scope="col">Nombre Completo</th>
+                          <th scope="col">CI</th>
+                          <th scope="col">Telefono</th>
+                          <th scope="col">Direccion</th>
+                          <th scope="col">Edad</th>
+                          <th scope="col">Acciones</th>
                           <th scope="col"></th>
                         </tr>
                       </thead>
@@ -27,27 +32,46 @@
                           <td>{{ element.telefono }}</td>
                           <td>{{ element.direccion }}</td>
                           <td>{{ element.edad }}</td>
-                         <td>
-                              <button mat-raised-button (click)="eliminarPaciente(element.carnet_identidad)"><img src="../../../../assets/images/images/trash (2).png"></button>
-                              <button mat-raised-button [routerLink]="['/editpatient', element.carnet_identidad]"><img src="../../../../assets/images/images/edit.png"></button>
-                              <ng-container *ngIf="element.ya_calificado; else calificarBtn"> 
-                                <button mat-raised-button (click)="verEvaluacion(element.id_paciente)" 
-                                title="Ver Calificación">
-          <img src="../../../../assets/images/images/ver.png">
-        </button>
-      </ng-container>
+                          
+                          <td style="white-space: nowrap;"> <button mat-raised-button (click)="eliminarPaciente(element.carnet_identidad)" class="me-1">
+        <img src="../../../../assets/images/images/trash (2).png" style="width: 20px;">
+    </button>
 
-      <ng-template #calificarBtn>
-        <button mat-raised-button (click)="calificarPaciente(element.id_paciente)" title="Calificar Paciente">
-           <img src="../../../../assets/images/images/cerebral.png">
+    <button mat-raised-button [routerLink]="['/editpatient', element.carnet_identidad]" class="me-1">
+        <img src="../../../../assets/images/images/edit.png" style="width: 20px;">
+    </button>
+
+    <button mat-raised-button 
+            (click)="imprimirReporte(element)" 
+            [disabled]="generandoReporte"
+            title="Descargar PDF"
+            class="me-1"
+            style="min-width: 45px; background-color: #e0e0e0;"> <i class="fas fa-spinner fa-spin" *ngIf="generandoReporte"></i>
+        
+        <span *ngIf="!generandoReporte">
+            <i class="fas fa-file-pdf" style="color: #d32f2f; font-size: 1.2em;"></i>
+            <span *ngIf="!generandoReporte" style="font-size: 10px; font-weight: bold;">PDF</span>
+        </span>
+    </button>
+
+    <ng-container *ngIf="element.ya_calificado; else calificarBtn"> 
+        <button mat-raised-button (click)="verEvaluacion(element.id_paciente)" title="Ver Calificación">
+            <img src="../../../../assets/images/images/ver.png" style="width: 20px;">
         </button>
-      </ng-template>
-                             
-                          </td>
+    </ng-container>
+
+    <ng-template #calificarBtn>
+        <button mat-raised-button (click)="calificarPaciente(element.id_paciente)" title="Calificar Paciente">
+            <img src="../../../../assets/images/images/cerebral.png" style="width: 20px;">
+        </button>
+    </ng-template>
+
+</td>
                         </tr>
                       </tbody>
                     </table>
-                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="listPatients.length == 0">No hay productos para mostrar</h5>
+
+                    <h5 style="text-align: start; margin-top: 10px;" *ngIf="listPatients.length == 0">No hay pacientes para mostrar</h5>
               </div>
           </div>
       </div>

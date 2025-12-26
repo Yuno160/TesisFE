@@ -15,17 +15,17 @@
       </ng-container>
 
       <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef> Complete Name </th>
+        <th mat-header-cell *matHeaderCellDef> Nombre Completo </th>
         <td mat-cell *matCellDef="let element"> {{element.nombre_completo}} </td>
       </ng-container>
 
       <ng-container matColumnDef="usuario">
-        <th mat-header-cell *matHeaderCellDef> Username </th>
+        <th mat-header-cell *matHeaderCellDef> Usuario </th>
         <td mat-cell *matCellDef="let element"> {{element.usuario}} </td>
       </ng-container>
 
       <ng-container matColumnDef="rol">
-        <th mat-header-cell *matHeaderCellDef> User Role </th>
+        <th mat-header-cell *matHeaderCellDef> Rol </th>
         <td mat-cell *matCellDef="let element"> 
           <span class="badge" 
                 [class.badge-primary]="element.rol === 'ADMIN'"
@@ -36,13 +36,23 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="equipo">
+        <th mat-header-cell *matHeaderCellDef> Equipo </th>
+        <td mat-cell *matCellDef="let element"> 
+            <span *ngIf="element.nombre" class="text-primary fw-bold">
+                {{ element.nombre }}
+            </span>
+            <span *ngIf="!element.nombre" class="text-muted"> - </span>
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="cargo">
-        <th mat-header-cell *matHeaderCellDef> Role </th>
+        <th mat-header-cell *matHeaderCellDef> Cargo </th>
         <td mat-cell *matCellDef="let element"> {{element.cargo}} </td>
       </ng-container>
 
       <ng-container matColumnDef="estado">
-        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <th mat-header-cell *matHeaderCellDef> Estatus </th>
         <td mat-cell *matCellDef="let element"> 
           {{ element.estado === 1 ? 'Activo' : 'Inactivo' }} 
         </td>

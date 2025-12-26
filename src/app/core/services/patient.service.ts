@@ -1,128 +1,126 @@
 import { Injectable } from '@angular/core';
-import { HttpClient,HttpErrorResponse  } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import {Patient} from '../models/Patient';
-import { catchError } from 'rxjs/operators';
-
-
+import { Patient } from '../models/Patient'; // Asegúrate que la ruta sea correcta
+import { catchError,map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class PatientService {
+  // Ajusta si tu API tiene otro prefijo, pero esto debe coincidir con tu backend
   url = 'http://localhost:3000/api/pacientes';
   
   constructor(private http: HttpClient) { }
 
+  // 1. OBTENER TODOS
   getPatients(): Observable<any>{
     return this.http.get(this.url);
   }
 
-deletePatient(carnet_identidad: string): Observable<any> {
-    console.log('Eliminando paciente con carnet:', carnet_identidad);
-    
+  // 2. CREAR (Este es el que usaba tu componente AddPatient)
+  createPaciente(patient: Patient): Observable<any> {
+    console.log('Enviando a CREAR:', patient);
+    // IMPORTANTE: Asegúrate que en tu backend la ruta sea POST /api/pacientes/crear
+    // Si tu backend usa la raíz POST /, cambia esto a `this.http.post(this.url, patient)`
+    return this.http.post(`${this.url}/crear`, patient); 
+  }
+
+  // 3. EDITAR
+  savePatient(patient: Patient): Observable<any> {
+      // Este método parece ser un 'update' camuflado o un 'create' genérico.
+      // Para evitar confusiones, redirijamos al update si tiene ID, o create si no.
+      if (patient.carnet_identidad) {
+         return this.editPatient(patient.carnet_identidad, patient);
+      }
+      return this.createPaciente(patient);
+  }
+
+  // 4. ACTUALIZAR (PUT)
+  editPatient(carnet_identidad: string, patient: Patient): Observable<any> {
+    console.log('Enviando a EDITAR:', { carnet_identidad, patient });
+    return this.http.put(`${this.url}/edit/${carnet_identidad}`, patient).pipe(
+        catchError(this.handleError)
+    );
+  }
+
+  // 5. ELIMINAR
+  deletePatient(carnet_identidad: string): Observable<any> {
+    console.log('Eliminando:', carnet_identidad);
     return this.http.delete(`${this.url}/delete/${carnet_identidad}`).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 409) {
-          // Convertimos el error 409 en una respuesta válida para manejar las dependencias
-          return of({
-            ...error.error,
-            status: error.status,
-            isConflict: true
-          });
+          // Conflicto de dependencias (tiene citas)
+          return of({ ...error.error, status: error.status, isConflict: true });
         }
-        // Para otros errores, los propagamos normalmente
         return throwError(() => error);
       })
     );
   }
 
-
-  savePatient(patient: Patient):Observable<any>{
-    console.log('Datos enviados al servidor:', patient);
-    return this.http.post(this.url, patient);
-
-  }
-
-
-  getPacienteById(id: string): Observable<Patient> { // <-- 2. CAMBIO DE NOMBRE
-    
-    // Llama al endpoint, ej: .../api/pacientes/123
-    return this.http.get<Patient>(`${this.url}/id/${id}`).pipe(
-      catchError(error => {
-        console.error(`Error al obtener paciente con ID: ${id}`, error);
-        
-        // <-- 3. SINTAXIS MODERNA DE ERROR
-        // Esto relanza el error para que el componente (CalificacionComponent)
-        // pueda saber que algo salió mal.
-        return throwError(() => new Error('Error al obtener datos del paciente.'));
-      })
-    );
-  }
-
-  
-editPatient(carnet_identidad: string, patient: Patient): Observable<{success: boolean, message?: string, data?: Patient}> {
-    // Verificación de datos antes de enviar
-    console.log('Enviando datos para actualización:', {
-        originalCi: carnet_identidad,
-        newData: patient
-    });
-
-    return this.http.put<{success: boolean, message?: string, data?: Patient}>(
-        `${this.url}/edit/${carnet_identidad}`,
-        patient
-    ).pipe(
-        catchError((error: HttpErrorResponse) => {
-            console.error('Error en editPatient:', error);
-            
-            // Manejo detallado de errores HTTP
-            let errorMessage = 'Error al actualizar el paciente';
-            
-            if (error.status === 400) {
-                errorMessage = error.error.message || 'Datos inválidos para la actualización';
-            } else if (error.status === 404) {
-                errorMessage = 'Paciente no encontrado';
-            } else if (error.status === 500) {
-                errorMessage = error.error.message || 'Error interno del servidor';
-            }
-
-            // Retorna un observable con el formato esperado
-            return throwError(() => ({
-                success: false,
-                message: errorMessage,
-                status: error.status
-            }));
-        })
-    );
+  // 6. BUSQUEDAS
+  buscarPorCarnet(carnet: string): Observable<any> {
+  return this.getPacienteByCarnet(carnet).pipe(
+    map((res: any) => {
+      // Si viene envuelto en 'data', lo sacamos. Si no, devolvemos tal cual.
+      return res.data || res;
+    })
+  );
 }
 
-  searchPatient(carnetIdentidad: string): Observable<any> {
-    return this.http.get(`${this.url}/search/${carnetIdentidad}`);
-  }
-  
-// --- AÑADE ESTA NUEVA FUNCIÓN ---
-  /**
-   * Obtiene un paciente por su Carnet de Identidad.
-   * (Usado por EditPatientComponent)
-   */
-  getPacienteByCarnet(carnet: string): Observable<Patient> {
-    // Llama al nuevo endpoint: .../api/pacientes/ci/23423423
-    return this.http.get<Patient>(`${this.url}/ci/${carnet}`).pipe(
+getPacienteByCarnet(carnet: string): Observable<any> {
+    // Asegúrate de que esta ruta coincida con tu backend (/ci/:carnet)
+    return this.http.get<any>(`${this.url}/ci/${carnet}`).pipe(
+      map(response => {
+        // ✨ AUTO-CORRECCIÓN:
+        // Si el backend devuelve { success: true, data: {...} }, extraemos 'data'.
+        // Si devuelve el paciente directo, lo dejamos pasar.
+        return response.data || response;
+      }),
       catchError(error => {
-        console.error(`Error al obtener paciente con Carnet: ${carnet}`, error);
+        console.error(`Error al buscar Carnet: ${carnet}`, error);
         return throwError(() => error);
       })
     );
   }
 
-  buscarPorCarnet(carnet: string): Observable<any> {
-   // --- LOG 2 ---
-    const url = `${this.url}/ci/${carnet}`;
-    console.log('--- FE: 2. Servicio (Service) ---');
-    console.log('Servicio recibe carnet:', carnet);
-    console.log('Llamando a la URL:', url);
-    // ---
-
-    // Asegúrate de que esta URL coincida con tu ruta en patient.routes.js
-    return this.http.get<any>(url);
+  getPacienteById(id: string): Observable<Patient> {
+    return this.http.get<Patient>(`${this.url}/id/${id}`).pipe(
+      catchError(error => throwError(() => new Error('Error al obtener por ID.')))
+    );
   }
+
+  // 7. FOTOS
+  subirFotoPerfil(idPaciente: any, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('archivo', file);
+    formData.append('idPaciente', idPaciente.toString());
+    
+    // Asegúrate que tu backend tenga esta ruta en pacienteRoutes.js
+    return this.http.post(`${this.url}/foto`, formData);
+  }
+
+  getUrlImagen(rutaBackend: string): string {
+    if (!rutaBackend) return 'assets/img/default-avatar.png'; // Imagen por defecto si no hay
+    return `http://localhost:3000/${rutaBackend.replace(/\\/g, '/')}`;
+  }
+
+  // --- MANEJO DE ERRORES CENTRALIZADO ---
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      console.error('Error cliente:', error.error.message);
+    } else {
+      console.error(`Error servidor ${error.status}:`, error.error);
+    }
+    // Propagamos el error para que el componente lo atrape (y muestre SweetAlert)
+    return throwError(() => error);
+  }
+
+  getZonas(): Observable<any> {
+    // Esto llama a tu backend: 
+    return this.http.get(`${this.url}/zonas`);
+  }
+
+  
+
+  
 }

@@ -1,67 +1,154 @@
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h2> {{ titulo | uppercase }}</h2>
-                    <form class="mt-3" [formGroup]="productoForm" (ngSubmit)="agregarPaciente()">
-                        <div class="mb-3">
-                            <input type="text" formControlName="nombre" class="form-control form-control-lg"
-                                placeholder="Patient Name">
-                            <div class="text-danger"
-                                *ngIf="productoForm.get('nombre')?.hasError('required') && productoForm.get('nombre')?.touched">
-                                <span>Patient name <strong>is mandatory</strong></span>
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-5"> 
+                    <h2 class="text-center mb-4 text-primary font-weight-bold">{{ titulo | uppercase }}</h2>
+                    
+                    <form [formGroup]="productoForm" (ngSubmit)="agregarPaciente()">
+
+                        <div class="d-flex flex-column align-items-center mb-4">
+                            <div class="avatar-container mb-2">
+                                <img *ngIf="previewFoto" [src]="previewFoto" class="profile-img">
+                                <div *ngIf="!previewFoto" class="placeholder-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
                             </div>
+                            <label class="btn btn-sm btn-outline-primary rounded-pill px-3" for="fotoInput">
+                                <i class="fas fa-camera me-1"></i> Subir Foto Perfil
+                            </label>
+                            <input type="file" id="fotoInput" (change)="onFotoSelected($event)" accept="image/*" hidden>
                         </div>
-                        <div class="mb-3">
-                            <input type="text" formControlName="carnet_identidad" class="form-control form-control-lg"
-                                placeholder="DNI">
-                            <div class="text-danger"
-                                *ngIf="productoForm.get('carnet')?.hasError('required') && productoForm.get('carnet')?.touched">
-                                <span>DNI <strong>is mandatory</strong></span>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nombre Completo <span class="text-danger">*</span></label>
+                                <input type="text" formControlName="nombre" class="form-control form-control-lg" placeholder="Ej: Juan Perez">
+                                <div class="text-danger small" *ngIf="productoForm.get('nombre')?.hasError('required') && productoForm.get('nombre')?.touched">
+                                    Requerido
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" formControlName="edad" class="form-control form-control-lg"
-                                placeholder="Age">
-                            <div class="text-danger"
-                                *ngIf="productoForm.get('edad')?.hasError('required') && productoForm.get('edad')?.touched">
-                                <span>Age <strong>is mandatory</strong></span>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" formControlName="telefono" class="form-control form-control-lg"
-                                placeholder="Phone Number">
-                            <div class="text-danger"
-                                *ngIf="productoForm.get('telefono')?.hasError('required') && productoForm.get('telefono')?.touched">
-                                <span>Phone Number <strong>is mandatory</strong></span>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" formControlName="direccion" class="form-control form-control-lg"
-                                placeholder="Address">
-                            <div class="text-danger"
-                                *ngIf="productoForm.get('direccion')?.hasError('required') && productoForm.get('direccion')?.touched">
-                                <span>Address <strong>is Mandatory</strong></span>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Carnet de Identidad <span class="text-danger">*</span></label>
+                                <input type="text" formControlName="carnet_identidad" class="form-control form-control-lg" placeholder="Ej: 1234567 SC">
+                                <div class="text-danger small" *ngIf="productoForm.get('carnet_identidad')?.hasError('required') && productoForm.get('carnet_identidad')?.touched">
+                                    Requerido
+                                </div>
                             </div>
                         </div>
 
-                        <mat-form-field appearance="outline" class="w-100">
-  <mat-label>Género</mat-label>
-  <mat-select formControlName="genero">
-    <mat-option value="Femenino">Femenino</mat-option>
-    <mat-option value="Masculino">Masculino</mat-option>
-  </mat-select>
-  <mat-error *ngIf="productoForm.get('genero')?.hasError('required')">
-    El género es requerido
-  </mat-error>
-</mat-form-field>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Edad <span class="text-danger">*</span></label>
+                                <input type="number" formControlName="edad" class="form-control form-control-lg">
+                            </div>
 
-                        
-                        <div class="mb-3">
-                            <button routerLink="/customers" class="btn btn-outline-secondary btn-lg float-start">VOLVER</button>
-                            <button type="submit" [disabled]="productoForm.invalid" class="btn btn-info btn-lg float-end">ACEPTAR</button>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Teléfono <span class="text-danger">*</span></label>
+                                <input type="text" formControlName="telefono" class="form-control form-control-lg">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Género <span class="text-danger">*</span></label>
+                                <select class="form-select form-select-lg" formControlName="genero">
+                                    <option value="" disabled selected>Seleccione...</option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="Masculino">Masculino</option>
+                                </select>
+                                <div class="text-danger small" *ngIf="productoForm.get('genero')?.hasError('required') && productoForm.get('genero')?.touched">
+                                    Requerido
+                                </div>
+                            </div>
                         </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-8">
+                                <label class="form-label">Dirección <span class="text-danger">*</span></label>
+                                <input type="text" formControlName="direccion" class="form-control form-control-lg" placeholder="Calle, Nro de Casa, Edificio...">
+                                <div class="text-danger small" *ngIf="productoForm.get('direccion')?.hasError('required') && productoForm.get('direccion')?.touched">
+                                    Requerido
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Zona / Provincia <span class="text-danger">*</span></label>
+                                <select class="form-select form-select-lg" formControlName="id_zona">
+                                    <option value="" disabled selected>Seleccione...</option>
+                                    <option *ngFor="let zona of listaZonas" [value]="zona.id_zona">
+                                        {{ zona.nombre_zona }}
+                                    </option>
+                                </select>
+                                <div class="text-danger small" *ngIf="productoForm.get('id_zona')?.hasError('required') && productoForm.get('id_zona')?.touched">
+                                    Seleccione una zona
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card bg-light border-0 mb-4 rounded-3">
+                            <div class="card-body">
+                                <h6 class="text-primary mb-3 d-flex justify-content-between align-items-center">
+                                    <span><i class="fas fa-folder-open me-2"></i> Expediente Digital</span>
+                                    <span class="badge bg-warning text-dark shadow-sm" style="font-size: 0.7em;">
+                                        <i class="fas fa-brain"></i> IA AUDITOR
+                                    </span>
+                                </h6>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small text-muted">Seleccione Informes, Rayos X, Laboratorios (PDF/Imágenes)</label>
+                                    <input type="file" class="form-control" (change)="onDocsSelected($event)" accept=".pdf, .png, .jpg, .jpeg" multiple>
+                                    <div class="form-text mt-1 text-muted small">
+                                        Puede seleccionar varios archivos a la vez. Máximo 5MB c/u.
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-wrap gap-2 mb-3" *ngIf="docsSeleccionados.length > 0">
+                                    <div *ngFor="let doc of docsSeleccionados; let i = index" class="badge bg-white text-dark border shadow-sm p-2 d-flex align-items-center">
+                                        
+                                        <i class="fas fa-file-pdf text-danger me-2" *ngIf="doc.type === 'application/pdf'"></i>
+                                        <i class="fas fa-file-image text-success me-2" *ngIf="doc.type !== 'application/pdf'"></i>
+                                        
+                                        <span class="me-2 text-truncate" style="max-width: 150px;">{{ doc.name }}</span>
+                                        
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash text-danger ms-2" viewBox="0 0 16 16" style="cursor: pointer;" (click)="eliminarDoc(i)" title="Eliminar archivo">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="text-center" *ngIf="docsSeleccionados.length > 0 && !analizandoIA && !resultadoIA">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" (click)="analizarDocumentosAhora()">
+                                        <i class="fas fa-search me-1"></i> Analizar Expediente con IA
+                                    </button>
+                                </div>
+
+                                <div *ngIf="analizandoIA" class="mt-3 text-center text-primary fade-in-animation py-3 bg-white rounded border border-primary border-opacity-25">
+                                    <i class="fas fa-circle-notch fa-spin fa-2x mb-2"></i>
+                                    <p class="mb-0 fw-bold">El Auditor Virtual está leyendo {{ docsSeleccionados.length }} documentos...</p>
+                                    <small class="text-muted">Cruzando datos clínicos y normativa CIF.</small>
+                                </div>
+
+                                <div *ngIf="resultadoIA" class="mt-3 text-center text-success fade-in-animation p-3 bg-white rounded border border-success border-opacity-25">
+                                    <i class="fas fa-check-circle fa-2x mb-2"></i>
+                                    <p class="mb-0 fw-bold">Análisis Completado</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button routerLink="/customers" type="button" class="btn btn-outline-secondary btn-lg px-4">
+                                Cancelar
+                            </button>
+                            
+                            <button type="submit" 
+                                [disabled]="productoForm.invalid || isSaving || analizandoIA" 
+                                class="btn btn-primary btn-lg px-5 shadow-sm">
+                                <span *ngIf="!isSaving && !analizandoIA">GUARDAR EXPEDIENTE</span>
+                                <span *ngIf="isSaving"><i class="fas fa-spinner fa-spin"></i> Guardando...</span>
+                                <span *ngIf="analizandoIA"><i class="fas fa-hourglass-half fa-spin"></i> Esperando IA...</span>
+                            </button>
+                        </div>
+
                     </form>
                 </div>
             </div>

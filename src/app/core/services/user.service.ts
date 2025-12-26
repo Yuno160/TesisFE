@@ -30,4 +30,10 @@ export class UserService {
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.API_URL}/${id}`);
   }
+
+  // --- NUEVO MÉTODO: OBTENER LISTA DE EQUIPOS ---
+  // Llama a la ruta: GET http://localhost:3000/api/users/equipos
+  getEquipos(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API_URL}/equipos`);
+  }
 }

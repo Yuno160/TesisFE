@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<!-- <div class="container mt-4">
   <h2><i class="fas fa-chart-bar"></i> Módulo de Generación de Reportes</h2>
   <p>Seleccione el tipo de reporte que desea generar.</p>
 
@@ -96,4 +96,112 @@
       </div>
     </div>
 
-  </div> </div>
+  </div> </div> -->
+
+  <div class="dashboard-container">
+  
+  <h1 class="page-title">Panel de Reportes y Estadísticas</h1>
+  <p class="page-subtitle">Visualización en tiempo real de la gestión de pacientes y calificaciones</p>
+
+  <div class="cards-grid">
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Gravedad de Discapacidad</h3>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrapper">
+          <canvas id="chartNiveles"></canvas>
+        </div>
+      </div>
+      <div class="card-footer">
+  <div class="action-buttons">
+    <a [href]="urlNiveles" target="_blank" class="btn-download btn-icon">
+      📊 Gráfico
+    </a>
+    <a [href]="urlNivelesTabla" target="_blank" class="btn-download btn-secondary">
+      📋 Detalle
+    </a>
+  </div>
+</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Distribución por Zonas</h3>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrapper">
+          <canvas id="chartZonas"></canvas>
+        </div>
+      </div>
+     <div class="card-footer">
+  <div class="action-buttons">
+    <a [href]="urlZonas" target="_blank" class="btn-download btn-icon">
+      📊 Gráfico
+    </a>
+    <a [href]="urlZonasTabla" target="_blank" class="btn-download btn-secondary">
+      📋 Detalle
+    </a>
+  </div>
+</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Área Geográfica</h3>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrapper">
+          <canvas id="chartAreas"></canvas>
+        </div>
+      </div>
+      <div class="card-footer">
+  <div class="action-buttons">
+    <a [href]="urlAreas" target="_blank" class="btn-download btn-icon">
+      📊 Gráfico
+    </a>
+    <a [href]="urlAreasTabla" target="_blank" class="btn-download btn-secondary">
+      📋 Detalle
+    </a>
+  </div>
+</div>
+    </div>
+
+    <div class="card wide-card">
+      <div class="card-header">
+        <h3>Productividad Mensual</h3>
+      </div>
+      <div class="card-body">
+        <div class="chart-wrapper">
+          <canvas id="chartProductividad"></canvas>
+        </div>
+      </div>
+     <div class="card-footer">
+  <div class="action-buttons">
+    <a [href]="urlProductividad" target="_blank" class="btn-download btn-icon">
+      📊 Gráfico
+    </a>
+    <a [href]="urlProductividadTabla" target="_blank" class="btn-download btn-secondary">
+      📋 Detalle
+    </a>
+  </div>
+</div>
+    </div>
+
+    <div class="card alert-card">
+      <div class="card-header">
+        <h3>⚠️ Alertas de Vencimiento</h3>
+      </div>
+      <div class="card-body">
+        <p>Reporte operativo de pacientes cuya calificación vence este año.</p>
+      </div>
+      <div class="card-footer">
+        <a [href]="urlVencimientos" target="_blank" class="btn-download btn-alert">
+          📅 Descargar Lista de Vencimientos
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

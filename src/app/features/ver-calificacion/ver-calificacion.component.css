@@ -79,3 +79,199 @@ h3 { color: #333; margin-bottom: 15px; }
 .fecha-item strong {
   color: #333;
 }
+
+/* ... TUS ESTILOS ANTERIORES SE MANTIENEN IGUAL ... */
+
+/* --- ESTILOS ESPECÍFICOS PARA DOCUMENTOS --- */
+
+.docs-section {
+  margin-top: 40px; /* Espacio antes de empezar la sección */
+}
+
+/* Fila del formulario de subida */
+.docs-upload-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-end;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.docs-input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.docs-input-group label {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.docs-control {
+  padding: 8px 10px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 0.95em;
+  min-width: 200px;
+  outline: none;
+}
+.docs-control:focus {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.docs-file-input {
+  font-size: 0.9em;
+}
+
+.file-hint {
+  font-size: 0.8em;
+  color: #999;
+  margin-left: 5px;
+}
+
+.docs-actions {
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
+/* Botón de subir (Estilo sutil, gris claro o borde azul) */
+.btn-doc-upload {
+  padding: 8px 16px;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: all 0.3s;
+}
+.btn-doc-upload:hover:not(:disabled) {
+  color: #40a9ff;
+  border-color: #40a9ff;
+}
+.btn-doc-upload:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  background-color: #f5f5f5;
+}
+
+/* Tabla de Documentos */
+.docs-list-wrapper {
+  overflow-x: auto;
+}
+
+.docs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+
+.docs-table th {
+  text-align: left;
+  background-color: #fafafa;
+  color: #333;
+  padding: 12px 8px;
+  border-bottom: 1px solid #e8e8e8;
+  font-weight: 600;
+}
+
+.docs-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #e8e8e8;
+  color: #555;
+}
+
+.col-filename {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Botón Ver (Pequeño y limpio) */
+.btn-doc-view {
+  background-color: transparent;
+  border: 1px solid #555;
+  color: #333;
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: all 0.2s;
+}
+.btn-doc-view:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.docs-empty {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+  font-style: italic;
+  border: 1px dashed #e8e8e8;
+  border-radius: 4px;
+}
+
+/* Contenedor del avatar */
+.avatar-wrapper {
+  position: relative; /* Importante para posicionar el botón de cámara */
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+}
+
+/* La foto real */
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Evita que la foto se deforme */
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* El círculo de iniciales (Placeholder) */
+.patient-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #e6f7ff;
+  color: #1890ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 2.5em;
+  font-weight: bold;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* El botón de cámara flotante */
+.camera-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #1890ff;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1em;
+  border: 2px solid #fff;
+  transition: transform 0.2s;
+}
+
+.camera-btn:hover {
+  transform: scale(1.1);
+  background-color: #40a9ff;
+}

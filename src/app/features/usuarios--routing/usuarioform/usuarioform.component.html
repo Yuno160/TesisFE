@@ -29,6 +29,19 @@
     </mat-select>
   </mat-form-field>
 
+  <mat-form-field appearance="fill" class="w-100" *ngIf="userForm.get('rol')?.value === 'CALIFICADOR'">
+    <mat-label>Asignar Equipo Calificador</mat-label>
+    
+    <mat-select formControlName="id_equipo">
+      
+      <mat-option *ngFor="let equipo of listaEquipos" [value]="equipo.id_crew">
+        {{ equipo.nombre }}
+      </mat-option>
+
+    </mat-select>
+    <mat-hint>Seleccione el equipo al que pertenece este médico</mat-hint>
+  </mat-form-field>
+
   <mat-form-field appearance="fill" class="w-100">
     <mat-label>Cargo</mat-label>
     <input matInput formControlName="cargo" placeholder="Ej. Médico General">

@@ -1,0 +1,193 @@
+/* ========================================= */
+/* --- 1. TARJETA Y CONTENEDOR PRINCIPAL --- */
+/* ========================================= */
+.card {
+    border-radius: 20px; /* Bordes más redondeados */
+    border: none; /* Sin borde negro feo */
+    background-color: #ffffff;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08); /* Sombra difuminada elegante */
+    overflow: hidden; /* Para que nada se salga de los bordes */
+}
+
+.card-body {
+    padding: 3rem !important; /* Más aire interno */
+}
+
+h2 {
+    color: #2c3e50;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* ========================================= */
+/* --- 2. FOTO DE PERFIL (AVATAR) ---        */
+/* ========================================= */
+.avatar-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #ffffff; /* Borde blanco para separar del fondo */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15); /* Sombra para que "flote" */
+    background-color: #f1f3f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.avatar-container:hover {
+    transform: scale(1.05); /* Efecto zoom sutil al pasar el mouse */
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder-icon {
+    font-size: 3.5rem;
+    color: #ced4da;
+}
+
+/* Botón de subir foto más estilizado */
+label[for="fotoInput"] {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 8px 20px;
+    margin-top: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ========================================= */
+/* --- 3. FORMULARIOS (INPUTS Y SELECTS) --- */
+/* ========================================= */
+
+/* Etiquetas */
+.form-label {
+    font-weight: 600;
+    color: #5c677d; /* Gris azulado profesional */
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase; /* Etiquetas en mayúsculas pequeñas se ven bien */
+    letter-spacing: 0.5px;
+}
+
+/* UNIFICACIÓN: Hacemos que Inputs y Selects se vean IGUALES */
+.form-control, 
+.form-select {
+    height: 50px; /* Altura fija para uniformidad */
+    border-radius: 12px; /* Bordes bien redondeados */
+    border: 1px solid #e9ecef; /* Borde sutil */
+    background-color: #f8f9fa; /* Fondo gris muy claro */
+    padding: 0 15px; /* Espacio interno lateral */
+    font-size: 1rem;
+    color: #495057;
+    transition: all 0.2s ease-in-out;
+    box-shadow: none; /* Quitamos sombras default de bootstrap */
+}
+
+/* Estado Focus (Cuando haces clic) */
+.form-control:focus, 
+.form-select:focus {
+    background-color: #ffffff;
+    border-color: #4dabf7; /* Azul brillante */
+    box-shadow: 0 0 0 4px rgba(77, 171, 247, 0.15); /* Resplandor azul suave */
+}
+
+/* Corrección específica para el Select (Combo Box) */
+.form-select {
+    /* Agregamos esta línea vital para que no se repita el icono */
+    background-repeat: no-repeat;
+    
+    /* El resto se mantiene igual para que se vea moderno */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-position: right 1rem center;
+    background-size: 16px 12px;
+    cursor: pointer;
+    /* Reseteamos la apariencia nativa para que tome nuestros estilos */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Texto de error */
+.text-danger.small {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    margin-left: 5px;
+    font-weight: 500;
+}
+
+/* ========================================= */
+/* --- 4. ZONA DE EXPEDIENTE (MODERNA) ---   */
+/* ========================================= */
+.card.bg-light {
+    background-color: #f8faff !important; /* Azul muy pálido */
+    border: 2px dashed #cbd5e1 !important; /* Borde punteado */
+    transition: all 0.3s;
+}
+
+.card.bg-light:hover {
+    border-color: #4dabf7 !important;
+    background-color: #f0f7ff !important;
+}
+
+/* Input de archivo */
+input[type="file"].form-control {
+    height: auto;
+    padding: 10px;
+    background: white;
+    border: 1px solid #dee2e6;
+}
+
+/* Badges de archivos seleccionados */
+.badge.bg-white {
+    border: 1px solid #dee2e6 !important;
+    color: #495057 !important;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.badge.bg-white:hover {
+    background-color: #ffeaea !important; /* Rojo muy suave al pasar mouse (alerta de borrar) */
+    border-color: #ffc9c9 !important;
+}
+
+/* ========================================= */
+/* --- 5. ANIMACIONES IA Y OTROS ---         */
+/* ========================================= */
+.fade-in-animation {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Botones Principales */
+.btn-lg {
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    padding: 12px 30px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+}

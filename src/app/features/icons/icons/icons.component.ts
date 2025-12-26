@@ -1,24 +1,60 @@
- import { Component,ViewChild } from '@angular/core';
+ import { Component,ViewChild, OnInit, OnDestroy} from '@angular/core';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
-import { Chart } from 'angular-highcharts';
+
 import { saveAs } from 'file-saver';
 import { ReportesService } from '../../../core/services/reportes.service';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 @Component({
   selector: 'app-icons',
   templateUrl: './icons.component.html',
   styleUrls: ['./icons.component.css']
 })
-export class IconsComponent {
-// Variables para los inputs (bindings)
+export class IconsComponent implements OnInit, OnDestroy {
+
+  // Variables para guardar las instancias de los gráficos (para poder destruirlos si sales de la pag)
+  charts: any = {};
+  
+  urlNiveles = '';
+  urlZonas = '';
+  urlAreas = '';
+  urlProductividad = '';
+  urlVencimientos = '';
   pacienteSeleccionadoId: string = '';
-  mesSeleccionado: string = ''; // Formato "YYYY-MM"
+  mesSeleccionado: string = ''; 
   fechaInicio: string = '';
   fechaFin: string = '';
   isLoading: boolean = false
 
-  // Inyectamos el servicio (cuando exista)
-  // constructor(private reportesService: ReportesService) {}
-  constructor(private reportesService: ReportesService) {} // Por ahora
+  urlNivelesTabla: string = '';
+  urlZonasTabla: string = '';
+  urlAreasTabla: string = '';
+  urlProductividadTabla: string = '';
+
+
+  constructor(private reportesService: ReportesService) {} 
+
+ngOnInit(): void {
+    // 1. Configuramos URLs de descarga
+    this.urlNiveles = this.reportesService.getPdfUrl('niveles');
+    this.urlZonas = this.reportesService.getPdfUrl('zonas');
+    this.urlAreas = this.reportesService.getPdfUrl('areas');
+    this.urlProductividad = this.reportesService.getPdfUrl('productividad');
+    this.urlVencimientos = this.reportesService.getPdfUrl('vencimientos');
+
+    // B) NUEVO: URLs para Reportes de TABLA/DETALLE
+    // Usamos el método getPdfTablaUrl que creamos en el servicio
+    this.urlNivelesTabla = this.reportesService.getPdfTablaUrl('niveles');
+    this.urlZonasTabla = this.reportesService.getPdfTablaUrl('zonas');
+    this.urlAreasTabla = this.reportesService.getPdfTablaUrl('areas');
+    this.urlProductividadTabla = this.reportesService.getPdfTablaUrl('productividad');
+
+    // 2. Cargamos los gráficos
+    this.cargarGraficoNiveles();
+    this.cargarGraficoZonas();
+    this.cargarGraficoAreas();
+    this.cargarGraficoProductividad();
+  }
 
   generarReportePaciente() {
     if (!this.pacienteSeleccionadoId) {
@@ -107,5 +143,69 @@ export class IconsComponent {
     // Próximamente: this.reportesService.getReporteRango(this.fechaInicio, this.fechaFin)...
     alert('Función de Reporte por Rango aún no implementada.');
     this.isLoading = false;
+  }
+
+  // --- LÓGICA DE CARGA DE GRÁFICOS ---
+
+  cargarGraficoNiveles() {
+    this.reportesService.getNivelesGravedad().subscribe(resp => {
+      if (resp.ok) {
+        this.renderChart('chartNiveles', 'doughnut', resp.chartData, 'Distribución de Gravedad');
+      }
+    });
+  }
+
+  cargarGraficoZonas() {
+    this.reportesService.getDistribucionZonas().subscribe(resp => {
+      if (resp.ok) {
+        this.renderChart('chartZonas', 'pie', resp.chartData, 'Pacientes por Zona');
+      }
+    });
+  }
+
+  cargarGraficoAreas() {
+    this.reportesService.getDistribucionAreas().subscribe(resp => {
+      if (resp.ok) {
+        this.renderChart('chartAreas', 'doughnut', resp.chartData, 'Urbana vs Rural');
+      }
+    });
+  }
+
+  cargarGraficoProductividad() {
+    this.reportesService.getProductividad().subscribe(resp => {
+      if (resp.ok) {
+        this.renderChart('chartProductividad', 'bar', resp.chartData, 'Evolución Mensual', true);
+      }
+    });
+  }
+
+  // --- FUNCIÓN GENÉRICA PARA DIBUJAR (DRY - Don't Repeat Yourself) ---
+  renderChart(canvasId: string, type: any, data: any, title: string, isBar: boolean = false) {
+    const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    if (!canvas) return;
+
+    // Destruir gráfico previo si existe (evita bugs al recargar)
+    if (this.charts[canvasId]) {
+      this.charts[canvasId].destroy();
+    }
+
+    this.charts[canvasId] = new Chart(canvas, {
+      type: type,
+      data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: { display: true, text: title },
+          legend: { position: 'bottom', display: !isBar } // Ocultar leyenda si es barras
+        },
+        scales: isBar ? { y: { beginAtZero: true, ticks: { stepSize: 1 } } } : {}
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    // Limpieza de memoria
+    Object.values(this.charts).forEach((chart: any) => chart.destroy());
   }
 }
